@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 // On inclut les fichiers de la librairie standard
 #include <cerrno>
 #include <cmath>
