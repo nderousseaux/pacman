@@ -1,2 +1,4 @@
-feur
 *.o
+pacman
+sprites.bmp
+.DS_Store

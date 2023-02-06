@@ -1,5 +1,5 @@
 CC			:= g++
-TARGET		:= #TODO
+TARGET		:= pacman
 
 #Directories
 SRCDIR		:= src
@@ -22,11 +22,10 @@ debug: CFLAGS += -g
 debug: $(TARGETDIR)/$(TARGET)
 
 $(TARGETDIR)/$(TARGET): $(OBJS) #On construit l'executable
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ -lSDL2 -lSDL2_image
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp #On construit le reste
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $< 
 
 clean:
 	rm -f $(OBJS)
-
