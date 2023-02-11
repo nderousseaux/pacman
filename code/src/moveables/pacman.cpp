@@ -42,7 +42,11 @@ void Pacman::animate() {
   // Phase de l'animation
   int phase = _animation / 4; // On change de sprite toutes les 4 frames
 
-  if (phase != 2) {
+  cout << phase << endl;
+
+  if (phase != 3) {
+    phase = phase % 2; // On a 2 sprites par phase
+
     // On change l'image de pacman
     switch(Moveable::_direction) {
       case UP:
@@ -68,5 +72,5 @@ void Pacman::animate() {
 
   // On incrémente l'animation
   _animation++;
-  _animation %= 12;
+  _animation %= 16;
 }

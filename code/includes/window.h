@@ -33,5 +33,5 @@ class Window {
     void start(); // Démarre le jeu
     void update(); // Update la fenêtre
     bool handle_events(); // Gère les évènements, retourne true si on doit continuer
-
+    void add_to_window(Element * element); // Ajoute un élément à la fenêtre
 };

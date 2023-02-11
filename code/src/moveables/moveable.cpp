@@ -7,18 +7,15 @@ Moveable::Moveable(int x, int y):
 Moveable::~Moveable() {}
 
 /* Getters/Setters */
-void Moveable::set_x(int x) {
-  // On vérifie que le sprite ne sorte pas de la fenêtre
-  if (x < 0) {
-    x = 0; 
-    _direction = STOP;
-  }
-  else if (x > Window::WINDOW_WIDTH - Element::_pos.w) {
-    x = Window::WINDOW_WIDTH - Element::_pos.w;
-    _direction = STOP;
-  }
-
+void Moveable::set_x(int x) { 
   Element::_pos.x = x;
+  // Si le sprite est entièrement sorti de la fenêtre, on le replace à l'autre bout
+  if (x < -Element::_pos.w) {
+    Element::_pos.x = Window::WINDOW_WIDTH;
+  }
+  else if (x > Window::WINDOW_WIDTH) {
+    Element::_pos.x = -Element::_pos.w;
+  }
 }
 void Moveable::set_y(int y) {
   // On vérifie que le sprite ne sorte pas de la fenêtre
