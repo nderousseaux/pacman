@@ -42,8 +42,6 @@ void Pacman::animate() {
   // Phase de l'animation
   int phase = _animation / 4; // On change de sprite toutes les 4 frames
 
-  cout << phase << endl;
-
   if (phase != 3) {
     phase = phase % 2; // On a 2 sprites par phase
 
