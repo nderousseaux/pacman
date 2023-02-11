@@ -31,8 +31,8 @@ class Element {
     ~Element();
 
     /* Getters/Setters */
-    SDL_Rect * get_pos();
-    const SDL_Rect * get_current_sprite();
+    SDL_Rect * get_pos() { return &_pos; }
+    const SDL_Rect * get_current_sprite() { return _current_sprite; }
 
     /* Méthodes */
     void virtual update(); // Fait réagir l'élément (think + animate)

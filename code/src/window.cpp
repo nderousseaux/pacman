@@ -46,9 +46,8 @@ void Window::update() {
   SDL_FillRect(SDL_GetWindowSurface(_window), NULL, SDL_MapRGB(SDL_GetWindowSurface(_window)->format, 0, 0, 0));
 
   // On affiche tout les éléments
-  for (Element * element : _elements) {
-    SDL_BlitScaled(_sprites, element->get_current_sprite(), SDL_GetWindowSurface(_window), element->get_pos());
-  }
+  for (Element * element : _elements)
+    add_to_window(element);
 
   SDL_UpdateWindowSurface(_window);
 }
@@ -66,4 +65,11 @@ bool Window::handle_events() {
     }
   }
   return true;
+}
+
+// Ajoute un élément à la fenêtre 
+void Window::add_to_window(Element * element) {
+  int x = element->get_pos()->x; // On sauvegarde le x, car il va être modifié par SDL_BlitScaled (si il est négatif)
+  SDL_BlitScaled(_sprites, element->get_current_sprite(), SDL_GetWindowSurface(_window), element->get_pos());
+  element->get_pos()->x = x;
 }
