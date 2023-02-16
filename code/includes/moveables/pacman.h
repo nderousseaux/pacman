@@ -40,5 +40,5 @@ class Pacman: public virtual Moveable {
   public:
     /* Constructeur/Destructeur */
     Pacman();
-    ~Pacman();  
+    ~Pacman() override;  
 };

@@ -48,6 +48,8 @@ void Pacman::dead() {
 
 // Fonction qui fait réfléchir pacman (entrée clavier)
 void Pacman::think() {
+  if (_state == DEAD) // On ne fait rien si pacman est mort
+    return;
   // On récupère les touches pressées
   const Uint8 * keys = SDL_GetKeyboardState(NULL);
   // On change la direction de pacman

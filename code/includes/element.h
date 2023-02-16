@@ -28,7 +28,7 @@ class Element {
   public:
     /* Constructeur/Destructeur */
     Element(int x, int y);
-    ~Element();
+    virtual ~Element();
 
     /* Getters/Setters */
     SDL_Rect * get_pos() { return &_pos; }

@@ -21,6 +21,7 @@ class Fantom: public Moveable {
 
     /* Variables d'instance */
     FantomState _state = CHASE; // État du fantôme
+    SDL_Rect _sprites[16]; // Liste de tout les sprites du fantôme
 
   protected:
     /* Getters/Setters */
@@ -36,5 +37,5 @@ class Fantom: public Moveable {
   public:
     /* Constructeur/Destructeur */
     Fantom(int x, int y);
-    ~Fantom();
+    virtual ~Fantom() override;
 };

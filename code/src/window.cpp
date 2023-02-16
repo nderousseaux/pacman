@@ -21,6 +21,10 @@ Window::Window() {
 }
 
 Window::~Window() {
+  // On libère la mémoire
+  for (Element * element : _elements)
+    delete element;
+
   SDL_DestroyWindow(_window);
   SDL_Quit();
 }

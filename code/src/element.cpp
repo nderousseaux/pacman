@@ -5,7 +5,6 @@ Element::Element(int x, int y) {
   _pos.x = x;
   _pos.y = y;
 }
-
 Element::~Element() {}
 
 /* Getters/Setters */
