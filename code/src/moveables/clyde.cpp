@@ -13,7 +13,7 @@ const SDL_Rect Clyde::SPRITES[8] = {
 };
 
 /* Constructeur/Destructeur */
-Clyde::Clyde(int x, int y):
-	Fantom(x,y) {}
+Clyde::Clyde():
+	Fantom(INITIAL_X, INITIAL_Y) {}
 
 Clyde::~Clyde() {}

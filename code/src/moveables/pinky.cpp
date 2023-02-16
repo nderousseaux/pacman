@@ -13,7 +13,7 @@ const SDL_Rect Pinky::SPRITES[8] = {
 };
 
 /* Constructeur/Destructeur */
-Pinky::Pinky(int x, int y):
-	Fantom(x,y) {}
+Pinky::Pinky():
+	Fantom(INITIAL_X, INITIAL_Y) {}
 
 Pinky::~Pinky() {}

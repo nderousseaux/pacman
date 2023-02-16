@@ -21,13 +21,13 @@ void Game::load_elements() {
   _window->add_element(new Field());
 
   // On ajoute pacman
-  _window->add_element(new Pacman(318, 638));
+  _window->add_element(new Pacman());
 
   // On ajoute les fantomes
-  _window->add_element(new Blinky(318, 318));
-  _window->add_element(new Pinky(284, 400));
-  _window->add_element(new Inky(318, 400));
-  _window->add_element(new Clyde(352, 400));
+  _window->add_element(new Blinky());
+  _window->add_element(new Pinky());
+  _window->add_element(new Inky());
+  _window->add_element(new Clyde());
 }
 
 // Boucle principale du jeu
