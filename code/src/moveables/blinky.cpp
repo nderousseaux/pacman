@@ -13,7 +13,7 @@ const SDL_Rect Blinky::SPRITES[8] = {
 };
 
 /* Constructeur/Destructeur */
-Blinky::Blinky(int x, int y):
-	Fantom(x,y) {}
+Blinky::Blinky():
+	Fantom(INITIAL_X, INITIAL_Y) {}
 
 Blinky::~Blinky() {}

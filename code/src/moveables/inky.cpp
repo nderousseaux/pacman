@@ -13,7 +13,7 @@ const SDL_Rect Inky::SPRITES[8] = {
 };
 
 /* Constructeur/Destructeur */
-Inky::Inky(int x, int y):
-	Fantom(x,y) {}
+Inky::Inky():
+	Fantom(INITIAL_X, INITIAL_Y) {}
 
 Inky::~Inky() {}

@@ -10,6 +10,8 @@ class Blinky: public virtual Fantom {
   private:
     /* Variables de classe */
     static const SDL_Rect SPRITES[8]; // Liste des sprites du fantôme
+    static const int INITIAL_X = 318; // Position initiale de Blinky
+    static const int INITIAL_Y = 318;
 
   protected:
     /* Getters/Setters */
@@ -17,6 +19,6 @@ class Blinky: public virtual Fantom {
 
   public:
     /* Constructeur/Destructeur */
-    Blinky(int x, int y);
+    Blinky();
     ~Blinky();    
 };
