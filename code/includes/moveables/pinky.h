@@ -15,10 +15,10 @@ class Pinky: public virtual Fantom {
 
   protected:
     /* Getters/Setters */
-    SDL_Rect * get_specific_sprites() {return (SDL_Rect *)SPRITES;}
+    SDL_Rect * get_specific_sprites() override {return (SDL_Rect *)SPRITES;}
 
   public:
     /* Constructeur/Destructeur */
     Pinky();
-    ~Pinky();
+    ~Pinky() override;
 };

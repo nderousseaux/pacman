@@ -16,5 +16,6 @@ int main() {
 
   // On libère la mémoire
   delete win;
+
   return 0;
 }

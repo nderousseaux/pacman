@@ -33,5 +33,5 @@ class Moveable: public Element {
   public:
     /* Constructeur/Destructeur */
     Moveable(int x, int y);
-    ~Moveable();
+    virtual ~Moveable() override;
 };

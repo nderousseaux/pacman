@@ -20,13 +20,11 @@ Fantom::~Fantom() {}
 
 /* Getters/Setters */
 SDL_Rect * Fantom::get_sprites() {
-	//On concatène les sprites de fantôme et de fantôme spécial
-	SDL_Rect * sprites = new SDL_Rect[16];
 	for (int i = 0; i < 8; i++) {
-		sprites[i] = get_specific_sprites()[i];
-		sprites[i+8] = SPRITES[i];
+		_sprites[i] = get_specific_sprites()[i];
+		_sprites[i+8] = SPRITES[i];
 	}
-	return sprites;
+	return _sprites;
 }
 
 // Fonction qui fait réfléchir le fantôme
