@@ -1,6 +1,6 @@
-#include "../../includes/moveables/pinky.h"
+#include "pinky.h"
 
-// /* Variables de classe */
+/* Variables de classe */
 const SDL_Rect Pinky::SPRITES[8] = {
   { 72, 142, 14, 14 }, // Haut 1
   { 89, 142, 14, 14 }, // Haut 2

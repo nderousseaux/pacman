@@ -1,4 +1,4 @@
-#include "../includes/field.h"
+#include "field.h"
 
 /* Variables de classe */
 const SDL_Rect Field::SPRITES[3] = {
@@ -16,7 +16,7 @@ Field::~Field() {}
 
 /* Méthodes */
 // Fait réagir le terrain
-void Field::think() {}
+void Field::react() {}
 
 // Change le sprite du terrain
 void Field::animate() {}

@@ -1,4 +1,6 @@
-#include "../../includes/moveables/pacman.h"
+#include "game.h"
+#include "fantom.h"
+#include "pacman.h"
 
 /* Variable de classe */
 const SDL_Rect Pacman::SPRITES[19] = {
@@ -22,6 +24,7 @@ const SDL_Rect Pacman::SPRITES[19] = {
   { 137,  104, 16, 16  },    // Dead 9
   { 151,  105, 16, 16  },    // Dead 10
 };
+
 /* Constructeur/Destructeur */
 Pacman::Pacman():
 	Moveable(INITIAL_X, INITIAL_Y) {}
@@ -31,25 +34,35 @@ Pacman::~Pacman() {}
 /* Méthodes */
 // Fait apparaître pacman
 void Pacman::spawn() {
-  _state = NORMAL;
+  _state = PACMAN_NORMAL;
   _direction = STOP;
   _animation = 0;
   set_x(INITIAL_X);
   set_y(INITIAL_Y);
   set_current_sprite(8);
+  Game::get_instance()->set_state(GAME_PLAY);
 }
 
 // Fonction qui fait mourir pacman
 void Pacman::dead() {
-  _state = DEAD;
+  _state = PACMAN_DEAD;
   _direction = STOP;
   _animation = 0;
+  Game::get_instance()->set_state(GAME_PAUSE);
 }
 
-// Fonction qui fait réfléchir pacman (entrée clavier)
-void Pacman::think() {
-  if (_state == DEAD) // On ne fait rien si pacman est mort
-    return;
+// Fonction qui fait réagir pacman (entrée clavier)
+void Pacman::react() {
+
+  // On récupère les touches pressées
+  keybord_react();
+
+  // On gère les collisions
+  collision_react();
+}
+
+// Fait régir pacman (entrée clavier)
+void Pacman::keybord_react() {
   // On récupère les touches pressées
   const Uint8 * keys = SDL_GetKeyboardState(NULL);
   // On change la direction de pacman
@@ -61,17 +74,27 @@ void Pacman::think() {
     Moveable::_direction = RIGHT;
   else if (keys[SDL_SCANCODE_LEFT])
     Moveable::_direction = LEFT;
-  else if (keys[SDL_SCANCODE_D]) // Temporaire : D = DEAD
-    dead();  
+}
+
+// Fait régir pacman (Collision)
+void Pacman::collision_react() {
+  // On récupère l'élément sur lequel pacman est
+  Element * e = Game::get_instance()->check_collision(this);
+
+  // On regarde si pacman est en collision avec un fantôme
+  if (Fantom * f = dynamic_cast<Fantom *>(e)) {
+    if (f->get_state() == FANTOM_CHASE)
+      dead();
+  }
 }
 
 // Changement du sprite de pacman
 void Pacman::animate() {
   switch(_state ) {
-    case NORMAL:
+    case PACMAN_NORMAL:
       animate_normal();
       break;
-    case DEAD:
+    case PACMAN_DEAD:
       animate_dead();
       break;
   }

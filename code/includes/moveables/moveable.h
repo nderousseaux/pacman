@@ -1,10 +1,6 @@
 #pragma once
-#include <iostream>
-#include <SDL2/SDL.h>
-#include "../element.h"
-#include "../window.h"
 
-using namespace std;
+#include "element.h"
 
 enum Direction {
   UP,
@@ -28,7 +24,7 @@ class Moveable: public Element {
   
     /* Méthodes */
     void move(); // Déplace l'élément
-    void update() override; // Fait réagir l'élément (think + animate + move)
+    void update() override; // Met à jour l'élément (react + animate + move)
 
   public:
     /* Constructeur/Destructeur */

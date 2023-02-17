@@ -1,7 +1,8 @@
-#include "../includes/element.h"
+#include "game.h"
+#include "element.h"
 
 /* Constructeur/Destructeur */
-Element::Element(int x, int y) {
+Element::Element(int x, int y) {  
   _pos.x = x;
   _pos.y = y;
 }
@@ -15,8 +16,9 @@ void Element::set_current_sprite(int index) {
 }
 
 /* Méthodes */
-// Fait réagir l'élément (think + animate)
+// Met à jour l'élément (react + animate)
 void Element::update() {
-  think();
+  if (Game::get_instance()->get_state() != GAME_PAUSE)
+    react();
   animate();
 }

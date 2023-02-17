@@ -1,13 +1,14 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <SDL2/SDL.h>
 #include "element.h"
+#include <vector>
+
+using namespace std;
 
 // Classe représentant une fenêtre
 class Window {
   private:
     /* Variables de classe */
+    static Window * _instance; // Instance unique de la classe
     static const char * WINDOW_TITLE; // Titre de la fenêtre
     static const char * SPRITES_PATH; // Chemin vers les sprites
 
@@ -26,6 +27,7 @@ class Window {
     ~Window();
 
     /* Getters/Setters */
+    static Window * get_instance() { return _instance; }
     void add_element(Element * element);
     std::vector<Element *> get_elements();
 
