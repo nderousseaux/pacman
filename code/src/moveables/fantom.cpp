@@ -1,4 +1,4 @@
-#include "../../includes/moveables/fantom.h"
+#include "fantom.h"
 
 /* Variables de classe */
 const SDL_Rect Fantom::SPRITES[8] = {
@@ -27,8 +27,8 @@ SDL_Rect * Fantom::get_sprites() {
 	return _sprites;
 }
 
-// Fonction qui fait réfléchir le fantôme
-void Fantom::think() {
+// Fonction qui fait réagir le fantôme
+void Fantom::react() {
   // A chaque tick, il y a une chance sur 50 qu'il change de direction
   if (rand() % 50 == 0)
     _direction = (Direction)(rand() % 5);
@@ -44,7 +44,7 @@ void Fantom::animate() {
 	int phase = _animation / 4; // On change de sprite toutes les 4 frames
 
 	switch (_state) {
-		case CHASE: // Le fantôme est en mode chasse
+		case FANTOM_CHASE: // Le fantôme est en mode chasse
 			phase %= 2; // Il n'y a que 2 sprites pour la chasse
 			switch(Moveable::_direction) {
 				case UP:
@@ -64,11 +64,11 @@ void Fantom::animate() {
 					break;
 			}
 			break;
-		case FRIGHTENED: // Le fantôme est en mode peur
+		case FANTOM_FRIGHTENED: // Le fantôme est en mode peur
 			phase %= 4; // Il y a 4 sprites pour le mode peur
 			set_current_sprite(8+phase);
 			break;
-		case EATEN:
+		case FANTOM_EATEN:
 			// Il n'y a qu'un sprite pour le mode mangé
 			switch(Moveable::_direction) {
 				case UP:

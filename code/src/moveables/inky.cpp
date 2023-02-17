@@ -1,6 +1,6 @@
-#include "../../includes/moveables/inky.h"
+#include "inky.h"
 
-// /* Variables de classe */
+/* Variables de classe */
 const SDL_Rect Inky::SPRITES[8] = {
   { 72, 160, 14, 14 },  // Haut 1
   { 89, 160, 14, 14 },  // Haut 2

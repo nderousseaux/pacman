@@ -1,10 +1,8 @@
 #pragma once
-#include <iostream>
-#include <SDL2/SDL.h>
+
 #include "fantom.h"
 
-using namespace std;
-
+class Fantom;
 // Classe représentant Pinky (le fantôme rose)
 class Pinky: public virtual Fantom {
   private:

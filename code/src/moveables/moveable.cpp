@@ -1,4 +1,6 @@
-#include "../../includes/moveables/moveable.h"
+#include "window.h"
+#include "game.h"
+#include "moveable.h"
 
 /* Constructeur/Destructeur */
 Moveable::Moveable(int x, int y):
@@ -51,8 +53,9 @@ void Moveable::move() {
   }
 }
 
-//Fait "réagir" l'élément (think + animate + move)
+//Met à jour l'élément (react + animate + move)
 void Moveable::update() {
   Element::update();
-  move();
+  if (Game::get_instance()->get_state() != GAME_PAUSE)
+    move();
 }

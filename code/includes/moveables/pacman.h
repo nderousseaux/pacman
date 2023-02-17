@@ -1,13 +1,9 @@
 #pragma once
-#include <iostream>
-#include <SDL2/SDL.h>
 #include "moveable.h"
 
-using namespace std;
-
 enum PacmanState {
-  NORMAL,
-  DEAD
+  PACMAN_NORMAL,
+  PACMAN_DEAD
 };
 
 // Classe représentant pacman
@@ -21,7 +17,7 @@ class Pacman: public virtual Moveable {
     static const int INITIAL_Y = 638; // Position initiale de pacman
 
     /* Variables d'instance */
-    PacmanState _state = NORMAL; // État de pacman
+    PacmanState _state = PACMAN_NORMAL; // État de pacman
 
   protected:
     /* Getters/Setters */
@@ -32,7 +28,9 @@ class Pacman: public virtual Moveable {
     /* Méthodes */
     void spawn(); // Fait réapparaître pacman
     void dead(); // Fait mourir pacman
-    void think() override; // Fait réfléchir pacman
+    void react() override; // Fait réagir pacman (entrée clavier) puis collision
+    void keybord_react(); // Fait réagir pacman (entrée clavier)
+    void collision_react(); // Fait réagir pacman (collision)
     void animate() override; // Change le sprite de pacman
     void animate_normal(); // Change le sprite de pacman en mode normal
     void animate_dead(); // Change le sprite de pacman en mode mort

@@ -1,14 +1,11 @@
 #pragma once
-#include <iostream>
-#include <SDL2/SDL.h>
+
 #include "moveable.h"
 
-using namespace std;
-
 enum FantomState {
-  CHASE,        // Chasse pacman
-  FRIGHTENED,   // Fuit pacman
-  EATEN,        // Est mangé par pacman
+  FANTOM_CHASE,        // Chasse pacman
+  FANTOM_FRIGHTENED,   // Fuit pacman
+  FANTOM_EATEN,        // Est mangé par pacman
 };
 
 // Classe représentant un fantôme
@@ -20,7 +17,7 @@ class Fantom: public Moveable {
     static const SDL_Rect SPRITES[8]; // Sprites commun à tous les fantômes
 
     /* Variables d'instance */
-    FantomState _state = CHASE; // État du fantôme
+    FantomState _state = FANTOM_CHASE; // État du fantôme
     SDL_Rect _sprites[16]; // Liste de tout les sprites du fantôme
 
   protected:
@@ -31,11 +28,14 @@ class Fantom: public Moveable {
     SDL_Rect * get_sprites() override;
 
     /* Méthodes */
-    void think() override; // Fait réfléchir le fantôme
+    void react() override; // Fait réagir le fantôme
     void animate() override; // Change le sprite du fantôme
 
   public:
     /* Constructeur/Destructeur */
     Fantom(int x, int y);
     virtual ~Fantom() override;
+
+    /* Getters/Setters */
+    FantomState get_state() {return _state;}
 };

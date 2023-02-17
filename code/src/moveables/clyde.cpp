@@ -1,6 +1,6 @@
-#include "../../includes/moveables/clyde.h"
+#include "clyde.h"
 
-// /* Variables de classe */
+/* Variables de classe */
 const SDL_Rect Clyde::SPRITES[8] = {
   { 72, 178, 14, 14 },  // Haut 1
   { 89, 178, 14, 14 },  // Haut 2

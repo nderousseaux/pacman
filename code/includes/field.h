@@ -1,9 +1,6 @@
 #pragma once
-#include <iostream>
-#include <SDL2/SDL.h>
-#include "element.h"
 
-using namespace std;
+#include "element.h"
 
 // Classe représentant le terrain
 class Field: public Element {
@@ -18,7 +15,7 @@ class Field: public Element {
     int get_zoom() override {return ZOOM; }
 
     /* Méthodes */
-    void think() override; // Fait "réfléchir" le terrain
+    void react() override; // Fait réagir le terrain
     void animate() override; // Change le sprite du terrain
 
 

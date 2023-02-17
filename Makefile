@@ -9,7 +9,7 @@ OBJDIR		:= out
 TARGETDIR	:= .
 
 #Flags
-CFLAGS		:= -Wall -Wextra -Werror -I$(INCDIR) -std=c++11
+CFLAGS		:= -Wall -Wextra -Werror -I$(INCDIR) -I$(INCDIR)/moveables -std=c++11
 
 #Files
 SRCS		:= $(wildcard $(SRCDIR)/**/*.cpp) $(wildcard $(SRCDIR)/*.cpp) 

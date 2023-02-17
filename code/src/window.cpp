@@ -1,13 +1,20 @@
-#include "../includes/window.h"
+#include "game.h"
+#include "window.h"
 
-#include "../includes/game.h"
+#include <iostream>
 
 /* Variables de classe */
 const char * Window::WINDOW_TITLE = "PacMan";
 const char * Window::SPRITES_PATH = "assets/sprites.bmp";
+Window * Window::_instance = nullptr;
 
 /* Constructeur/Destructeur */
 Window::Window() {
+  if (_instance != nullptr)
+    throw "Window already exists";
+  Window::_instance = this;
+
+
    // On démarre une fenetre
   if (SDL_Init(SDL_INIT_VIDEO) != 0 ) {
     std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError() << std::endl;
@@ -40,7 +47,7 @@ void Window::add_element(Element * element) {
 /* Méthodes */
 // Démarre le jeu
 void Window::start() {
-  Game * game = new Game(this);
+  Game * game = new Game();
   delete game;
 }
 

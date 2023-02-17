@@ -1,9 +1,5 @@
-#include <iostream>
-
+#include "window.h"
 #include <SDL2/SDL.h>
-
-#include "../includes/window.h"
-
 
 // Fonction d'entrée du programme
 int main() {

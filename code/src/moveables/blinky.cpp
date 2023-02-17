@@ -1,6 +1,6 @@
-#include "../../includes/moveables/blinky.h"
+#include "blinky.h"
 
-// /* Variables de classe */
+/* Variables de classe */
 const SDL_Rect Blinky::SPRITES[8] = {
   { 72, 124, 14, 14 },  // Haut 1
   { 89, 124, 14, 14 },  // Haut 2

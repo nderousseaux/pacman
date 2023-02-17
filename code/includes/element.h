@@ -1,8 +1,7 @@
 #pragma once
-#include <iostream>
 #include <SDL2/SDL.h>
 
-using namespace std;
+class Game;
 
 // Classe représentant un élément affichable sur la fenêtre
 class Element {
@@ -21,9 +20,8 @@ class Element {
     virtual int get_zoom() = 0;
     
     /* Méthodes */
-    void virtual think() = 0; // Fait "réfléchir" l'élément
+    void virtual react() = 0; // Fait reagir l'élément
     void virtual animate() = 0; // Change le sprite de l'élément
-
 
   public:
     /* Constructeur/Destructeur */
@@ -35,5 +33,5 @@ class Element {
     const SDL_Rect * get_current_sprite() { return _current_sprite; }
 
     /* Méthodes */
-    void virtual update(); // Fait réagir l'élément (think + animate)
+    void virtual update(); // Met à jour l'élément (react + animate)
 };
