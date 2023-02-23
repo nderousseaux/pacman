@@ -1,6 +1,6 @@
 #include "blinky.h"
 
-/* Variables de classe */
+/* #region Variables de classe */
 const SDL_Rect Blinky::SPRITES[8] = {
   { 72, 124, 14, 14 },  // Haut 1
   { 89, 124, 14, 14 },  // Haut 2
@@ -12,8 +12,14 @@ const SDL_Rect Blinky::SPRITES[8] = {
   { 55, 124, 14, 14 }   // Gauche 2
 };
 
-/* Constructeur/Destructeur */
+Intersection * Blinky::START = nullptr; // Intersection de départ de Blinky (initialisée par Intersection)
+/* #endregion */
+
+/* #region Constructeur/Destructeur */
 Blinky::Blinky():
-	Fantom(INITIAL_X, INITIAL_Y) {}
+	Fantom(INITIAL_X, INITIAL_Y) {
+    _destination = START;
+  }
 
 Blinky::~Blinky() {}
+/* #endregion */

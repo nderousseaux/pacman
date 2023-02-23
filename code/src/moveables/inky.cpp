@@ -1,6 +1,6 @@
 #include "inky.h"
 
-/* Variables de classe */
+/* #region Variables de classe */
 const SDL_Rect Inky::SPRITES[8] = {
   { 72, 160, 14, 14 },  // Haut 1
   { 89, 160, 14, 14 },  // Haut 2
@@ -12,8 +12,14 @@ const SDL_Rect Inky::SPRITES[8] = {
   { 55, 160, 14, 14 }   // Gauche 2
 };
 
-/* Constructeur/Destructeur */
+Intersection * Inky::START = nullptr; // Intersection de départ de Inky (initialisée par Intersection)
+/* #endregion */
+
+/* #region Constructeur/Destructeur */
 Inky::Inky():
-	Fantom(INITIAL_X, INITIAL_Y) {}
+	Fantom(INITIAL_X, INITIAL_Y) {
+    _destination = START;
+  }
 
 Inky::~Inky() {}
+/* #endregion */

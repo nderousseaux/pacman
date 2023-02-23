@@ -1,15 +1,17 @@
+#include "game.h"
+#include "window.h"
 #include "field.h"
 #include "pacman.h"
 #include "blinky.h"
 #include "pinky.h"
 #include "inky.h"
 #include "clyde.h"
-#include "game.h"
 
-/* Variables de classe */
+/* #region Variables de classe */
 Game * Game::_instance = nullptr;
+/* #endregion */
 
-/* Constructeur/Destructeur */
+/* #region Constructeur/Destructeur */
 Game::Game() {
   if (_instance != nullptr)
     throw "Game already exists";
@@ -23,8 +25,9 @@ Game::Game() {
 }
 
 Game::~Game() {}
+/* #endregion */
 
-/* Méthodes */
+/* #region Méthodes */
 // Charge les éléments sur la fenêtre
 void Game::load_elements() {
 
@@ -66,6 +69,20 @@ void Game::main_loop() {
 	}
 }
 
+// Redémarre la partie
+void Game::restart() {
+  // On fait respawn les fantomes
+  for (Element * element : Window::get_instance()->get_elements()) {
+    if (Fantom * fantom = dynamic_cast<Fantom*>(element))
+      fantom->spawn();
+    if (Pacman * pacman = dynamic_cast<Pacman*>(element))
+      pacman->spawn();
+  }
+
+  // On redemarre la partie
+  set_state(GAME_PLAY);
+}
+
 // Gestion du clavier, renvoie false si on appuie sur ESCAPE
 bool Game::control() {
   // Gestion du clavier        
@@ -93,5 +110,5 @@ Element * Game::check_collision(Element * element) {
       return other;
   }
   return nullptr;
-
 }
+/* #endregion */

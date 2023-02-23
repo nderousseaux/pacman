@@ -1,5 +1,8 @@
 #pragma once
 #include "element.h"
+
+#include <SDL2/SDL.h>
+
 #include <vector>
 
 using namespace std;

@@ -1,6 +1,6 @@
 #include "pinky.h"
 
-/* Variables de classe */
+/* region Variables de classe */
 const SDL_Rect Pinky::SPRITES[8] = {
   { 72, 142, 14, 14 }, // Haut 1
   { 89, 142, 14, 14 }, // Haut 2
@@ -12,8 +12,14 @@ const SDL_Rect Pinky::SPRITES[8] = {
   { 55, 142, 14, 14 }  // Gauche 2
 };
 
-/* Constructeur/Destructeur */
+Intersection * Pinky::START = nullptr; // Intersection de départ de Pinky (initialisée par Intersection)
+/* endregion */
+
+/* #region Constructeur/Destructeur */
 Pinky::Pinky():
-	Fantom(INITIAL_X, INITIAL_Y) {}
+	Fantom(INITIAL_X, INITIAL_Y) {
+    _destination = START;
+  }
 
 Pinky::~Pinky() {}
+/* #endregion */
