@@ -1,8 +1,9 @@
+#include "pacman.h"
 #include "game.h"
 #include "fantom.h"
-#include "pacman.h"
 
-/* Variable de classe */
+
+/* #region Variables de classe */
 const SDL_Rect Pacman::SPRITES[19] = {
   { 80,   90,  14, 14  },    // Haut 1
   { 97,   90,  14, 14  },    // Haut 2
@@ -25,33 +26,20 @@ const SDL_Rect Pacman::SPRITES[19] = {
   { 151,  105, 16, 16  },    // Dead 10
 };
 
-/* Constructeur/Destructeur */
+Intersection * Pacman::START = nullptr; // Intersection de départ de pacman (initialisée par Intersection)
+/* #endregion */
+
+/* #region Constructeurs/Destructeurs */
 Pacman::Pacman():
-	Moveable(INITIAL_X, INITIAL_Y) {}
+	Moveable(INITIAL_X, INITIAL_Y) {
+    _destination = START;
+  }
 
 Pacman::~Pacman() {}
+/* #endregion */
 
-/* Méthodes */
-// Fait apparaître pacman
-void Pacman::spawn() {
-  _state = PACMAN_NORMAL;
-  _direction = STOP;
-  _animation = 0;
-  set_x(INITIAL_X);
-  set_y(INITIAL_Y);
-  set_current_sprite(8);
-  Game::get_instance()->set_state(GAME_PLAY);
-}
-
-// Fonction qui fait mourir pacman
-void Pacman::dead() {
-  _state = PACMAN_DEAD;
-  _direction = STOP;
-  _animation = 0;
-  Game::get_instance()->set_state(GAME_PAUSE);
-}
-
-// Fonction qui fait réagir pacman (entrée clavier)
+/* #region Méthodes react */
+// Fonction qui fait réagir pacman
 void Pacman::react() {
 
   // On récupère les touches pressées
@@ -65,15 +53,21 @@ void Pacman::react() {
 void Pacman::keybord_react() {
   // On récupère les touches pressées
   const Uint8 * keys = SDL_GetKeyboardState(NULL);
-  // On change la direction de pacman
-  if (keys[SDL_SCANCODE_UP])
-    Moveable::_direction = UP;
-  else if (keys[SDL_SCANCODE_DOWN])
-    Moveable::_direction = DOWN;
-  else if (keys[SDL_SCANCODE_RIGHT])
-    Moveable::_direction = RIGHT;
-  else if (keys[SDL_SCANCODE_LEFT])
-    Moveable::_direction = LEFT;
+  Direction dir = Direction_utils::from_keys(keys);
+
+  // Si on doit faire demi-tour
+  if (dir == Direction_utils::opposite(_direction)){
+    // On inverse la direction
+    _direction = Direction_utils::opposite(_direction);
+    _next_direction = _direction;
+    Intersection * tmp = _destination->get_from_direction(_direction);
+    if (tmp != nullptr)
+      _destination = tmp;
+  }
+    
+  // Sinon on change la direction
+  else if (Direction_utils::from_keys(keys) != STOP)
+    _next_direction = Direction_utils::from_keys(keys);
 }
 
 // Fait régir pacman (Collision)
@@ -86,6 +80,21 @@ void Pacman::collision_react() {
     if (f->get_state() == FANTOM_CHASE)
       dead();
   }
+}
+
+// Fait apparaître pacman
+void Pacman::spawn() {
+  Moveable::spawn();
+  _state = PACMAN_NORMAL;
+  set_current_sprite(8);
+}
+
+// Fonction qui fait mourir pacman
+void Pacman::dead() {
+  _state = PACMAN_DEAD;
+  _direction = STOP;
+  _animation = 0;
+  Game::get_instance()->set_state(GAME_PAUSE);
 }
 
 // Changement du sprite de pacman
@@ -141,14 +150,14 @@ void Pacman::animate_dead() {
 
   // On arrête l'animation si on a fini
   if (phase > 12){
-    spawn();
+    Game::get_instance()->restart();
     return;
   }
 
   // On décale le sprite de 1 pixel car les sprites de mort sont plus grands
   if (_animation == 4) {
-    set_x(_pos.x - get_zoom());
-    set_y(_pos.y - 2 * get_zoom());
+    set_x(_pos->x - get_zoom());
+    set_y(_pos->y - 2 * get_zoom());
   }
   
   if (phase == 0)

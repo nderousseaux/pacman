@@ -1,6 +1,6 @@
 #include "fantom.h"
 
-/* Variables de classe */
+/* #region Variables de classe */
 const SDL_Rect Fantom::SPRITES[8] = {
 	{ 4, 196, 14, 14 }, // Appeuré 1, bleu
 	{ 21, 196, 14, 14 }, // Appeuré 2, bleu
@@ -11,14 +11,17 @@ const SDL_Rect Fantom::SPRITES[8] = {
   { 106, 196, 14, 14 }, // Mangé haut
   { 123, 196, 14, 14 }  // Mangé bas
 };
+/* #endregion */
 
-/* Constructeur/Destructeur */
+/* #region Constructeur/Destructeur */
 Fantom::Fantom(int x, int y):
 	Moveable(x,y) {}
 
 Fantom::~Fantom() {}
+/* #endregion */
 
-/* Getters/Setters */
+
+/* #region Getters/Setters */
 SDL_Rect * Fantom::get_sprites() {
 	for (int i = 0; i < 8; i++) {
 		_sprites[i] = get_specific_sprites()[i];
@@ -26,16 +29,35 @@ SDL_Rect * Fantom::get_sprites() {
 	}
 	return _sprites;
 }
+/* #endregion */
 
+/* #region Méthodes */
 // Fonction qui fait réagir le fantôme
 void Fantom::react() {
-  // A chaque tick, il y a une chance sur 50 qu'il change de direction
-  if (rand() % 50 == 0)
-    _direction = (Direction)(rand() % 5);
+
+  // On choisi une direction parmis les directions proposées par la destination
+	vector<Direction> directions = _destination->get_directions();
+	// On supprime la direction opposée à la direction actuelle (un fantôme ne peut pas reculer)
+	for (unsigned long i = 0; i < directions.size(); i++)
+		if (directions[i] == Direction_utils::opposite(_direction)){
+			directions.erase(directions.begin() + i);
+			break;
+		}
+
+	// On choisi une direction aléatoire parmis les directions restantes
+	_next_direction = directions[rand() % directions.size()];
+	
 
   // A chaque tick, il y a une chance sur 100 qu'il change d'état
-  if (rand() % 100 == 0)
-    _state = (FantomState)(rand() % 3);
+  // if (rand() % 100 == 0)
+  //   _state = (FantomState)(rand() % 3);
+}
+
+// Fonction qui fait réapparaître le fantôme
+void Fantom::spawn() {
+	Moveable::spawn();
+	_state = FANTOM_CHASE;
+	set_current_sprite(0);
 }
 
 // Changement du sprite du fantôme
@@ -95,3 +117,4 @@ void Fantom::animate() {
 	_animation++;
 	_animation %= 16;
 }
+/* #endregion */

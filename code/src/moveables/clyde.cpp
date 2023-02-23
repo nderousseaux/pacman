@@ -1,6 +1,6 @@
 #include "clyde.h"
 
-/* Variables de classe */
+/* #region Variables de classe */
 const SDL_Rect Clyde::SPRITES[8] = {
   { 72, 178, 14, 14 },  // Haut 1
   { 89, 178, 14, 14 },  // Haut 2
@@ -12,8 +12,14 @@ const SDL_Rect Clyde::SPRITES[8] = {
   { 55, 178, 14, 14 }   // Gauche 2
 };
 
-/* Constructeur/Destructeur */
+Intersection * Clyde::START = nullptr; // Intersection de départ de Clyde (initialisée par Intersection)
+/* #endregion */
+
+/* #region Constructeur/Destructeur */
 Clyde::Clyde():
-	Fantom(INITIAL_X, INITIAL_Y) {}
+	Fantom(INITIAL_X, INITIAL_Y) {
+    _destination = START;
+  }
 
 Clyde::~Clyde() {}
+/* #endregion */
