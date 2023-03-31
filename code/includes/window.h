@@ -31,12 +31,14 @@ class Window {
 
     /* Getters/Setters */
     static Window * get_instance() { return _instance; }
-    void add_element(Element * element);
-    std::vector<Element *> get_elements();
+    std::vector<Element *> get_elements() { return _elements; }
+    void add_element(Element * element) { _elements.push_back(element); }
+    void remove_element(Element * element);
 
     /* Méthodes */
     void start(); // Démarre le jeu
     void update(); // Update la fenêtre
     bool handle_events(); // Gère les évènements, retourne true si on doit continuer
     void add_to_window(Element * element); // Ajoute un élément à la fenêtre
+    void quit(); // Quitte le jeu
 };

@@ -1,6 +1,7 @@
 #include "pacman.h"
 #include "game.h"
 #include "fantom.h"
+#include "dot.h"
 
 
 /* #region Variables de classe */
@@ -41,7 +42,6 @@ Pacman::~Pacman() {}
 /* #region Méthodes react */
 // Fonction qui fait réagir pacman
 void Pacman::react() {
-
   // On récupère les touches pressées
   keybord_react();
 
@@ -79,6 +79,11 @@ void Pacman::collision_react() {
   if (Fantom * f = dynamic_cast<Fantom *>(e)) {
     if (f->get_state() == FANTOM_CHASE)
       dead();
+  }
+  // Si il est en collision avec un point
+  else if(Dot * d = dynamic_cast<Dot *>(e)) {
+    // On le supprime
+    Game::get_instance()->get_field()->remove_dot(d);
   }
 }
 
@@ -150,7 +155,7 @@ void Pacman::animate_dead() {
 
   // On arrête l'animation si on a fini
   if (phase > 12){
-    Game::get_instance()->restart();
+    Game::get_instance()->restart(false);
     return;
   }
 
