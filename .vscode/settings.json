@@ -43,6 +43,10 @@
 		"functional": "cpp",
 		"stop_token": "cpp",
 		"streambuf": "cpp",
-		"*.inc": "cpp"
+		"*.inc": "cpp",
+		"algorithm": "cpp",
+		"cstdio": "cpp",
+		"string_view": "cpp",
+		"typeinfo": "cpp"
 	}
 }

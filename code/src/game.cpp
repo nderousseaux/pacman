@@ -1,11 +1,10 @@
 #include "game.h"
 #include "window.h"
-#include "field.h"
-#include "pacman.h"
 #include "blinky.h"
 #include "pinky.h"
 #include "inky.h"
 #include "clyde.h"
+#include "dot.h"
 
 /* #region Variables de classe */
 Game * Game::_instance = nullptr;
@@ -32,10 +31,12 @@ Game::~Game() {}
 void Game::load_elements() {
 
   // On ajoute le terrain
-  Window::get_instance()->add_element(new Field());
+  _field = new Field();
+  Window::get_instance()->add_element(_field);
 
   // On ajoute pacman
-  Window::get_instance()->add_element(new Pacman());
+  _pacman = new Pacman();
+  Window::get_instance()->add_element(_pacman);
 
   // On ajoute les fantomes
   Window::get_instance()->add_element(new Blinky());
@@ -70,7 +71,9 @@ void Game::main_loop() {
 }
 
 // Redémarre la partie
-void Game::restart() {
+void Game::restart(bool with_dot_reset) {
+  (void)with_dot_reset;
+
   // On fait respawn les fantomes
   for (Element * element : Window::get_instance()->get_elements()) {
     if (Fantom * fantom = dynamic_cast<Fantom*>(element))
@@ -92,6 +95,13 @@ bool Game::control() {
   // Échap
   if (keys[SDL_SCANCODE_ESCAPE])
     return false;
+  // P
+  else if (keys[SDL_SCANCODE_P]) {
+    if (get_state() == GAME_PLAY)
+      set_state(GAME_PAUSE);
+    else if (get_state() == GAME_PAUSE)
+      set_state(GAME_PLAY);
+  }
 
   return true;
 }
@@ -110,5 +120,21 @@ Element * Game::check_collision(Element * element) {
       return other;
   }
   return nullptr;
+}
+
+// On a gagné la partie
+void Game::win() {
+  // On arrête pacman
+  _pacman->set_direction(STOP);
+  // On arrête les fantomes
+  set_state(GAME_PAUSE);
+
+  // On lance l'animation de victoire
+  _field->set_state(FIELD_WIN);
+}
+
+// On quite l'application
+void Game::quit() {
+  Window::get_instance()->quit();
 }
 /* #endregion */

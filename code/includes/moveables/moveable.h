@@ -12,6 +12,9 @@ class Moveable: public Element {
     Moveable(int x, int y);
     virtual ~Moveable() override;
 
+    /* Getter/setters */
+    void set_direction(Direction direction) {_direction = direction;}
+
     /* Méthodes */
     virtual void spawn();   // Fait réapparaître l'élément
 

@@ -37,11 +37,13 @@ Window::~Window() {
 }
 
 /* Getters/Setters */
-std::vector<Element *> Window::get_elements() {
-  return _elements;
-}
-void Window::add_element(Element * element) {
-  _elements.push_back(element);
+void Window::remove_element(Element * element) {
+  for (unsigned long i = 0; i < _elements.size(); i++) {
+    if (_elements[i] == element) {
+      _elements.erase(_elements.begin() + i);
+      return;
+    }
+  }
 }
 
 /* Méthodes */
@@ -83,4 +85,11 @@ void Window::add_to_window(Element * element) {
   int x = element->get_pos()->x; // On sauvegarde le x, car il va être modifié par SDL_BlitScaled (si il est négatif)
   SDL_BlitScaled(_sprites, element->get_current_sprite(), SDL_GetWindowSurface(_window), element->get_pos());
   element->get_pos()->x = x;
+}
+
+// On quite l'application
+void Window::quit() {
+  SDL_Event event;
+  event.type = SDL_QUIT;
+  SDL_PushEvent(&event);
 }
