@@ -33,6 +33,7 @@ class Window {
     static Window * get_instance() { return _instance; }
     std::vector<Element *> get_elements() { return _elements; }
     void add_element(Element * element) { _elements.push_back(element); }
+    void insert_element(Element * element) { _elements.insert(_elements.begin(), element); }
     void remove_element(Element * element);
 
     /* Méthodes */

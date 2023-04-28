@@ -8,10 +8,15 @@ const SDL_Rect Field::SPRITES[3] = {
 	{ 370,4, 166,214 },
 	{ 541,4, 166,214 }
 };
+// Instance unique de la classe
+Field * Field::_instance = nullptr;
 /* #endregion */
 
 /* #region Constructeur/Destructeur */
 Field::Field(): Element(0,0) {
+	if (_instance != nullptr)
+    throw "Field already exists";
+  Field::_instance = this;
 	set_current_sprite(1);
 	// On génère les intersections
 	Intersection::create_intersections();
@@ -24,30 +29,17 @@ Field::~Field() {}
 /* #endregion */
 
 /* #region Méthodes */
-// Place les points sur le terrain
+// Met tout les points dans le vecteur
 void Field::create_dots() {
 	// On génère les points
-	Dot::create_dots(&_dots);
+	Dot::create_dots(_dots);
 }
 
-// Supprime tout les points du terrain
-void Field::remove_all_dots() {
-	for (Dot *dot : _dots) {
-		dot->remove();
-	}
-	_dots.clear();
-}
 
 // Supprime un point du terrain
-void Field::remove_dot(Dot *dot) {
-	// On supprime le point
+void Field::remove_dot(Dot * dot) {
+	// On supprime le point de la liste
 	_dots.erase(std::remove(_dots.begin(), _dots.end(), dot), _dots.end());
-
-	dot->remove();
-	// Si on a plus de points, on a gagné
-	if(_dots.size() == 0 && _state != FIELD_WIN) {
-		Game::get_instance()->win();
-	}
 }
 
 // Fait réagir le terrain
@@ -65,11 +57,10 @@ void Field::animate() {
 		if (_animation == 100) {
 			_state = FIELD_NORMAL;
 			_animation = 0;
-			// On efface les points
-			remove_all_dots();
 
-			// On quite l'application
-			Game::get_instance()->quit();
+			// On recommence le jeu
+			Game::get_instance()->restart(true);
+
 		}
 		else {
 			_animation++;

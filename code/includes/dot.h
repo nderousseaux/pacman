@@ -12,11 +12,11 @@ class Dot: public virtual Element {
 		Dot(int x, int y);
 		~Dot() override;
 
-		/* Méthodes de classe */
-		static void create_dots(std::vector<Dot *> * dots); // Place les points sur le terrain
+		/* Variable statique */
+		static const int DOTS[188][2]; // Liste des coordonnées des points
 
-		/* Méthode d'instances */
-		void remove(); // On supprime le point
+		/* Méthode statique */
+		static void create_dots(std::vector<Dot *> & dots); // Place les points sur le terrain
 
 	protected:
 		/* Getters/Setters communs à tous les éléments */
@@ -31,7 +31,4 @@ class Dot: public virtual Element {
 		/* Variables de classe communs à tous les éléments */
 		static const SDL_Rect SPRITES[1]; // Liste des sprites du point
 		static const int ZOOM = 4;
-
-		/* Méthodes de classe */
-		static Dot * add_dot(Dot * dot); // Ajoute le point à la fenêtre et à la liste des points
 };
