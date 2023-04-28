@@ -9,6 +9,7 @@ Moveable::Moveable(int x, int y):
 Moveable::~Moveable() {}
 /* #endregion */
 
+
 /* #region Getters/Setters */
 void Moveable::set_x(int x) { 
   Element::_pos->x = x;
