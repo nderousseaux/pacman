@@ -81,9 +81,13 @@ void Pacman::collision_react() {
       dead();
   }
   // Si il est en collision avec un point
+
   else if(Dot * d = dynamic_cast<Dot *>(e)) {
     // On le supprime
-    Game::get_instance()->get_field()->remove_dot(d);
+    delete d;
+    // Si il n'y a plus de points
+    if (Field::get_instance()->get_dots().size() == 0 && Field::get_instance()->get_state() != FIELD_WIN)
+      Game::get_instance()->win();
   }
 }
 

@@ -29,7 +29,6 @@ Game::~Game() {}
 /* #region Méthodes */
 // Charge les éléments sur la fenêtre
 void Game::load_elements() {
-
   // On ajoute le terrain
   _field = new Field();
   Window::get_instance()->add_element(_field);
@@ -57,6 +56,8 @@ void Game::main_loop() {
 
     // Gestion du clavier        
     running = control();
+    if (!running)
+      break;
 
     // Fait "réagir" chaque élément
     for (Element * element : Window::get_instance()->get_elements())
@@ -72,14 +73,16 @@ void Game::main_loop() {
 
 // Redémarre la partie
 void Game::restart(bool with_dot_reset) {
-  (void)with_dot_reset;
-
   // On fait respawn les fantomes
   for (Element * element : Window::get_instance()->get_elements()) {
     if (Fantom * fantom = dynamic_cast<Fantom*>(element))
       fantom->spawn();
     if (Pacman * pacman = dynamic_cast<Pacman*>(element))
       pacman->spawn();
+  }
+
+  if (with_dot_reset) {
+    Field::get_instance()->create_dots();
   }
 
   // On redemarre la partie

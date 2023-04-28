@@ -27,11 +27,7 @@ Window::Window() {
   SDL_SetColorKey(_sprites, true, 0); // On rend le fond transparent
 }
 
-Window::~Window() {
-  // On libère la mémoire
-  for (Element * element : _elements)
-    delete element;
-
+Window::~Window() {  
   SDL_DestroyWindow(_window);
   SDL_Quit();
 }
