@@ -2,6 +2,7 @@
 #include "element.h"
 #include "field.h"
 #include "pacman.h"
+#include "fantom.h"
 
 #include <SDL2/SDL.h>
 
@@ -27,6 +28,7 @@ class Game {
     void main_loop(); // Boucle principale du jeu
     Element * check_collision(Element * element); // Vérifie si l'élément est en collision avec un autre élément
     void restart(bool with_dot_reset); // Redémarre la partie
+    void set_fantom_state(FantomState state); // Change l'état des fantomes
     void win(); // Gère la victoire
     void quit(); // Quitte le jeu
 

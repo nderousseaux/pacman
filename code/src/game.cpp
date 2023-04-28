@@ -136,6 +136,14 @@ void Game::win() {
   _field->set_state(FIELD_WIN);
 }
 
+// On change le mode de chaque fantome
+void Game::set_fantom_state(FantomState state) {
+  for (Element * element : Window::get_instance()->get_elements()) {
+    if (Fantom * fantom = dynamic_cast<Fantom*>(element))
+      fantom->set_state(state);
+  }
+}
+  
 // On quite l'application
 void Game::quit() {
   Window::get_instance()->quit();

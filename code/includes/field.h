@@ -2,9 +2,11 @@
 
 #include "element.h"
 #include "dot.h"
+#include "gomme.h"
 
 #include <SDL2/SDL.h>
 #include <vector>
+
 
 using namespace std;
 
@@ -27,8 +29,9 @@ class Field: public Element {
     FieldState get_state() {return _state;} // Retourne l'état du terrain
 
     /* Méthodes */
-    void remove_dot(Dot * dot); // Supprime un point du terrain
     void create_dots(); // Met tout les points dans le vecteur
+    void remove_dot(Dot * dot); // Supprime un point du terrain
+    void remove_gomme(Gomme * gomme); // Supprime un point du terrain
 
   protected:
     /* Getters/Setters communs à tous les éléments */
@@ -50,4 +53,5 @@ class Field: public Element {
     /* Variables d'instance */
     FieldState _state = FIELD_NORMAL; // État du terrain
     std::vector<Dot *> _dots; // Liste des points du terrain
+    std::vector<Gomme *> _gommes; // Liste des gommes du terrain
 };
