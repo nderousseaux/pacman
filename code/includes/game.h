@@ -1,5 +1,7 @@
 #pragma once
 #include "element.h"
+#include "pacman.h"
+#include "blinky.h"
 
 #include <SDL2/SDL.h>
 
@@ -19,6 +21,8 @@ class Game {
     static Game * get_instance() {return _instance;} // Renvoie l'instance unique de la classe
     GameState get_state() {return _state;} // Renvoie l'état du jeu
     void set_state(GameState state) {_state = state;} // Change l'état du jeu
+    Pacman * get_Pacman() {return _Pac;} // Renvoie les coordonnées de Pacman 
+    Blinky * get_Blinky() {return _Blinky;}
 
     /* Méthodes */
     void main_loop(); // Boucle principale du jeu
@@ -28,7 +32,8 @@ class Game {
   private:
     /* Variables de classe */
     static Game * _instance; // Instance unique de la classe
-
+    Pacman * _Pac; // Attribut Pacman pour obtenir les coord de ce dernier
+    Blinky * _Blinky; // Attribut Blinky pour obtenir les coord de ce dernier
     /* Variables d'instance */
     GameState _state = GAME_PLAY; // Etat du jeu
 

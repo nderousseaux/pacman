@@ -1,4 +1,7 @@
 #include "fantom.h"
+#include "pacman.h"
+
+#include <iostream>
 
 /* #region Variables de classe */
 const SDL_Rect Fantom::SPRITES[8] = {
@@ -32,6 +35,7 @@ SDL_Rect * Fantom::get_sprites() {
 /* #endregion */
 
 /* #region Méthodes */
+
 // Fonction qui fait réagir le fantôme
 void Fantom::react() {
 
@@ -45,13 +49,41 @@ void Fantom::react() {
 		}
 
 	// On choisi une direction aléatoire parmis les directions restantes
-	_next_direction = directions[rand() % directions.size()];
-	
-
-  // A chaque tick, il y a une chance sur 100 qu'il change d'état
-  // if (rand() % 100 == 0)
-  //   _state = (FantomState)(rand() % 3);
+	_next_direction = which_dir(directions);
 }
+
+SDL_Rect Fantom::maj_pos(Direction d, int x_pos, int y_pos){
+	switch(d){
+      case UP:
+        y_pos-=10;
+        break;
+      case DOWN:
+        y_pos+=10;
+        break;
+      case RIGHT:
+        x_pos+=10;
+        break;
+      case LEFT:
+        x_pos-=10;
+        break;
+      default:
+       break;
+    }
+	SDL_Rect new_pos = {x_pos,y_pos,0,0};
+	return (new_pos);
+}
+
+
+int Fantom::calc_distances(SDL_Rect * F, SDL_Rect * P){
+	cout << "pos pac :" << P->x << "," << P->y << endl;
+	cout << "pos fan :" << F->x << "," << F->y << endl;
+
+
+	int X = P->x - F->x;
+	int Y = P->y - F->y;
+	return sqrt((X*X) + (Y*Y));
+}
+
 
 // Fonction qui fait réapparaître le fantôme
 void Fantom::spawn() {

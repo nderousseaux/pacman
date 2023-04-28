@@ -6,6 +6,7 @@
 #include "pinky.h"
 #include "inky.h"
 #include "clyde.h"
+#include<iostream>
 
 /* #region Variables de classe */
 Game * Game::_instance = nullptr;
@@ -35,13 +36,14 @@ void Game::load_elements() {
   Window::get_instance()->add_element(new Field());
 
   // On ajoute pacman
-  Window::get_instance()->add_element(new Pacman());
-
+  _Pac = new Pacman();
+  _Blinky = new Blinky();
+  Window::get_instance()->add_element(_Pac);
   // On ajoute les fantomes
-  Window::get_instance()->add_element(new Blinky());
-  Window::get_instance()->add_element(new Pinky());
+  Window::get_instance()->add_element(_Blinky);
+  // Window::get_instance()->add_element(new Pinky());
   Window::get_instance()->add_element(new Inky());
-  Window::get_instance()->add_element(new Clyde());
+  // Window::get_instance()->add_element(new Clyde());
 }
 
 // Boucle principale du jeu

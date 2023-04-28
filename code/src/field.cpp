@@ -9,6 +9,8 @@ const SDL_Rect Field::SPRITES[3] = {
 };
 /* #endregion */
 
+/* 1 tiles fait 166/28 = 5,9 environ soit pour 8 tiles 47,4285 */
+
 /* #region Constructeur/Destructeur */
 Field::Field(): Element(0,0) {
 	set_current_sprite(1);

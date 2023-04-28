@@ -35,7 +35,10 @@ class Fantom: public Moveable {
     /* Méthodes */
     void react() override; // Fait réagir le fantôme
     void animate() override; // Change le sprite du fantôme
-
+    SDL_Rect maj_pos(Direction d, int x_pos, int y_pos);
+    // void virtual where_dest() = 0;
+    Direction virtual which_dir(vector<Direction> direction) = 0;
+    int calc_distances(SDL_Rect * F, SDL_Rect * P);
 
   private:
     /* Variables de classe */
