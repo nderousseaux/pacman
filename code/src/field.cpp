@@ -33,6 +33,8 @@ Field::~Field() {}
 void Field::create_dots() {
 	// On génère les points
 	Dot::create_dots(_dots);
+
+	Gomme::create_gommes(_gommes);
 }
 
 
@@ -40,6 +42,12 @@ void Field::create_dots() {
 void Field::remove_dot(Dot * dot) {
 	// On supprime le point de la liste
 	_dots.erase(std::remove(_dots.begin(), _dots.end(), dot), _dots.end());
+}
+
+// Supprime un point du terrain
+void Field::remove_gomme(Gomme * gomme) {
+	// On supprime le point de la liste
+	_gommes.erase(std::remove(_gommes.begin(), _gommes.end(), gomme), _gommes.end());
 }
 
 // Fait réagir le terrain

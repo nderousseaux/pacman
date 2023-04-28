@@ -89,6 +89,10 @@ void Fantom::animate() {
 		case FANTOM_FRIGHTENED: // Le fantôme est en mode peur
 			phase %= 4; // Il y a 4 sprites pour le mode peur
 			set_current_sprite(8+phase);
+
+			if (_animation == 511) // Au bout de 7 secones, on passe en mode normal
+				_state = FANTOM_CHASE;
+
 			break;
 		case FANTOM_EATEN:
 			// Il n'y a qu'un sprite pour le mode mangé
@@ -115,6 +119,6 @@ void Fantom::animate() {
 
 	// On incrémente l'animation
 	_animation++;
-	_animation %= 16;
+	_animation %= 512;
 }
 /* #endregion */

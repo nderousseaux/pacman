@@ -17,6 +17,7 @@ class Fantom: public Moveable {
 
     /* Getters/Setters */
     FantomState get_state() {return _state;}
+    void set_state(FantomState state) {_state = state;}
 
     /* Méthodes */
     void spawn() override; // Fait réapparaître le fantôme

@@ -2,6 +2,8 @@
 #include "game.h"
 #include "fantom.h"
 #include "dot.h"
+#include "gomme.h"
+
 
 
 /* #region Variables de classe */
@@ -79,15 +81,22 @@ void Pacman::collision_react() {
   if (Fantom * f = dynamic_cast<Fantom *>(e)) {
     if (f->get_state() == FANTOM_CHASE)
       dead();
+    if (f->get_state() == FANTOM_FRIGHTENED) {
+      f->set_state(FANTOM_EATEN);
+    }
   }
   // Si il est en collision avec un point
-
   else if(Dot * d = dynamic_cast<Dot *>(e)) {
     // On le supprime
     delete d;
     // Si il n'y a plus de points
     if (Field::get_instance()->get_dots().size() == 0 && Field::get_instance()->get_state() != FIELD_WIN)
       Game::get_instance()->win();
+  }
+  else if(Gomme * g = dynamic_cast<Gomme *>(e)) {
+    delete g;
+    // On passe en mode peur
+    Game::get_instance()->set_fantom_state(FANTOM_FRIGHTENED);
   }
 }
 
