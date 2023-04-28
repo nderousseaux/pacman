@@ -17,7 +17,11 @@ class Blinky: public virtual Fantom {
     /* Getters/Setters */
     SDL_Rect * get_specific_sprites() override {return (SDL_Rect *)SPRITES;}
     Intersection * get_start() override {return START;}
+    void set_destination(Intersection * new_destination);
 
+    /* Méthodes */
+    // void where_dest() override; //méthode pour établir la nouvelle destination (pro intersection)
+    Direction which_dir(vector<Direction> dir) override; // Methode pour indiquer comment régir pour le fantôme
 
   private:
     /* Variables de classe */

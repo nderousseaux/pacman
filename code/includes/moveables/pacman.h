@@ -24,11 +24,11 @@ class Pacman: public virtual Moveable {
     /* Méthodes */
     void spawn() override; // Fait réapparaître pacman
 
-
   protected:
     /* Getters/Setters communs à tous les éléments */
     SDL_Rect * get_sprites() override {return (SDL_Rect *)SPRITES;}
     int get_zoom() override {return ZOOM;}
+
 
     /* Getters/Setters communs à tous les moveables */
     int get_speed() override {return SPEED;}

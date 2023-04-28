@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fantom.h"
+#include "intersection.h"
 
 // Classe représentant Clyde (le fantôme rose)
 class Clyde: public virtual Fantom {
@@ -17,6 +18,8 @@ class Clyde: public virtual Fantom {
     /* Getters/Setters */
     SDL_Rect * get_specific_sprites() override {return (SDL_Rect *)SPRITES;}
     Intersection * get_start() override {return START;}
+    Direction which_dir(vector<Direction> directions) override;
+    void set_destination(Intersection * new_destination);
 
   private:
     /* Variables de classe */

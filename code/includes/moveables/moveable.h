@@ -14,6 +14,7 @@ class Moveable: public Element {
 
     /* Méthodes */
     virtual void spawn();   // Fait réapparaître l'élément
+    Direction get_dir(){return _direction;}
 
   protected:
     /* Variables d'instance */
@@ -24,11 +25,12 @@ class Moveable: public Element {
     /* Getters/Setters commun à tout les moveables */
     virtual int get_speed() = 0;
     virtual Intersection * get_start() = 0;
+    Intersection * get_destination(){return _destination;};
 
     /* Getters/Setters */
     void set_x(int x);
     void set_y(int y);
-  
+
     /* Méthodes */
     void update() override; // Met à jour l'élément (react + animate + move) (appelée à chaque tick)
     void move();            // Déplace l'élément
