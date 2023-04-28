@@ -35,10 +35,11 @@ void Game::load_elements() {
 
   // On ajoute pacman
   _pacman = new Pacman();
+  _blinky = new Blinky();
   Window::get_instance()->add_element(_pacman);
 
   // On ajoute les fantomes
-  Window::get_instance()->add_element(new Blinky());
+  Window::get_instance()->add_element(_blinky);
   Window::get_instance()->add_element(new Pinky());
   Window::get_instance()->add_element(new Inky());
   Window::get_instance()->add_element(new Clyde());

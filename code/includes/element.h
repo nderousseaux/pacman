@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+// #include "game.h"
 
 class Game;
 
@@ -12,6 +13,7 @@ class Element {
 
     /* Getters/Setters */
     SDL_Rect * get_pos() { return _pos; }
+    //  moveable Direction * get_dir() { ;}
     const SDL_Rect * get_current_sprite() { return _current_sprite; }
 
     /* Méthodes */

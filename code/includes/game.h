@@ -3,6 +3,7 @@
 #include "field.h"
 #include "pacman.h"
 #include "fantom.h"
+#include "blinky.h"
 
 #include <SDL2/SDL.h>
 
@@ -23,6 +24,8 @@ class Game {
     GameState get_state() {return _state;} // Renvoie l'état du jeu
     void set_state(GameState state) {_state = state;} // Change l'état du jeu
     Field * get_field() {return _field;} // Renvoie le terrain
+    Pacman * get_pacman() {return _pacman;} // Renvoie les coordonnées de Pacman 
+    Blinky * get_blinky() {return _blinky;}
 
     /* Méthodes */
     void main_loop(); // Boucle principale du jeu
@@ -35,7 +38,7 @@ class Game {
   private:
     /* Variables de classe */
     static Game * _instance; // Instance unique de la classe
-
+    Blinky * _blinky; // Attribut Blinky pour obtenir les coord de ce dernier
     /* Variables d'instance */
     GameState _state = GAME_PLAY; // Etat du jeu
     Field * _field; // Terrain
