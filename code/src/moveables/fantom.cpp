@@ -160,6 +160,27 @@ void Fantom::animate() {
 					break;
 			}
 			break;
+		case FANTOM_SCATTER:
+			phase %= 2; // Il n'y a que 2 sprites pour la chasse
+				switch(Moveable::_direction) {
+					case UP:
+						set_current_sprite(0+phase);
+						break;
+					case DOWN:
+						set_current_sprite(2+phase);
+						break;
+					case RIGHT:
+						set_current_sprite(4+phase);
+						break;
+					case LEFT:
+						set_current_sprite(6+phase);
+						break;
+					case STOP:
+						set_current_sprite(4+phase);
+						break;
+				}
+				break;
+
 		case FANTOM_FRIGHTENED: // Le fantôme est en mode peur
 			phase %= 4; // Il y a 4 sprites pour le mode peur
 			set_current_sprite(8+phase);

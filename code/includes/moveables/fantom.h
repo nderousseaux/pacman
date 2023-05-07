@@ -5,6 +5,7 @@
 
 enum FantomState {
   FANTOM_CHASE,        // Chasse pacman
+  FANTOM_SCATTER,      // Se dirige vers un coin de la map
   FANTOM_FRIGHTENED,   // Fuit pacman
   FANTOM_EATEN,        // Est mangé par pacman
 };
@@ -57,6 +58,6 @@ class Fantom: public Moveable {
     static const int ZOOM = 2; // Zoom des sprites
 
     /* Variables d'instance */
-    FantomState _state = FANTOM_CHASE; // État du fantôme
+    FantomState _state = FANTOM_SCATTER; // État du fantôme
     SDL_Rect _sprites[16]; // Liste de tout les sprites du fantôme
 };

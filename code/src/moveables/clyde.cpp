@@ -26,31 +26,20 @@ const SDL_Rect Clyde::SPRITES[8] = {
         switch(state){
 
           case FANTOM_CHASE:{
-            
-            switch(Game::get_instance()->get_mode()){
-              
-              case MODE_CHASE:{
-                if(res > 188){ // 47*4 (a cause du zoom)
-                  SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
-                  dir_choisie = get_dir_choisie(min_dist,*target,dir);
-                  break;
-                }
-                else{
-                  SDL_Rect corner = {SCATTER_X,SCATTER_Y,0,0};
-                  dir_choisie = get_dir_choisie(min_dist,corner,dir);
-                  break;
-                }
-
-
-              case MODE_SCATTER:{
-                dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
-                break;
-              }
-
-              default:
-                break;
-              }
+            if(res > 188){ // 47*4 (a cause du zoom)
+            SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
+            dir_choisie = get_dir_choisie(min_dist,*target,dir);
+            break;
             }
+            else{
+              SDL_Rect corner = {SCATTER_X,SCATTER_Y,0,0};
+              dir_choisie = get_dir_choisie(min_dist,corner,dir);
+              break;
+            }
+            break;
+          }
+          case FANTOM_SCATTER:{
+            dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0},dir);
             break;
           }
 

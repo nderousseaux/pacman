@@ -58,24 +58,17 @@ Direction Inky::which_dir(vector<Direction> dir, FantomState state){
       switch(state){
 
         case FANTOM_CHASE:{
-          switch(Game::get_instance()->get_mode()){
-            case MODE_CHASE:{
-              Direction pac_dir;
-              SDL_Rect target;
-              SDL_Rect * Pac_pos = Game::get_instance()->get_element<Pacman>()->get_pos(); // Pos Pacman
-              SDL_Rect * Blinky_pos = Game::get_instance()->get_element<Blinky>()->get_pos();
-              pac_dir = Game::get_instance()->get_element<Pacman>()->get_dir();
-              target = maj_target(pac_dir, Pac_pos, Blinky_pos);
-              dir_choisie = get_dir_choisie(min_dist,target,dir);
-              break;
-            }
-            case MODE_SCATTER:{
-              dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
-              break;
-            }
-            default:
-              break;
-          }
+          Direction pac_dir;
+          SDL_Rect target;
+          SDL_Rect * Pac_pos = Game::get_instance()->get_element<Pacman>()->get_pos(); // Pos Pacman
+          SDL_Rect * Blinky_pos = Game::get_instance()->get_element<Blinky>()->get_pos();
+          pac_dir = Game::get_instance()->get_element<Pacman>()->get_dir();
+          target = maj_target(pac_dir, Pac_pos, Blinky_pos);
+          dir_choisie = get_dir_choisie(min_dist,target,dir);
+          break;
+        }
+        case FANTOM_SCATTER:{
+          dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
           break;
         }
 
