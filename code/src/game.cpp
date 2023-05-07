@@ -10,6 +10,12 @@
 
 /* #region Variables de classe */
 Game * Game::_instance = nullptr;
+int Game::mode_timer = 0;
+int Game::phase_count = 0;
+const int Game::scatter_duration[] = {7000, 7000, 5000, 5000};
+const int Game::chase_duration = 20000;
+
+
 /* #endregion */
 
 /* #region Constructeur/Destructeur */
@@ -17,7 +23,6 @@ Game::Game() {
   if (_instance != nullptr) // Singleton
     throw "Game already exists";
   Game::_instance = this;
-
   // On ajoute tout les sprites à la fenêtre
   load_elements();
 
@@ -66,6 +71,10 @@ void Game::main_loop() {
     if (!running)
       break;
 
+    // Gestion de la clock et du mode
+    update_game_mode();
+
+
     // Fait "réagir" chaque élément
     for (Element * element : Window::get_instance()->get_elements())
       element->update();
@@ -77,6 +86,60 @@ void Game::main_loop() {
 		SDL_Delay(16);
 	}
 }
+
+//Scatter for 7 seconds, then Chase for 20 seconds.
+// Scatter for 7 seconds, then Chase for 20 seconds.
+// Scatter for 5 seconds, then Chase for 20 seconds.
+// Scatter for 5 seconds, then switch to Chase mode permanently.
+struct Phase {
+  GameMode mode;
+  int duration;
+  Phase* next;
+};
+
+// Initialisation de la liste chaînée de phases
+Phase phase8 = { MODE_CHASE, 20 * 1000, nullptr };
+Phase phase7 = { MODE_SCATTER, 5 * 1000, &phase8 };
+Phase phase6 = { MODE_CHASE, 20 * 1000, &phase7 };
+Phase phase5 = { MODE_SCATTER, 5 * 1000, &phase6 };
+Phase phase4 = { MODE_CHASE, 20 * 1000, &phase5 };
+Phase phase3 = { MODE_SCATTER, 7 * 1000, &phase4 };
+Phase phase2 = { MODE_CHASE, 20 * 1000, &phase3 };
+Phase phase1 = { MODE_SCATTER, 7 * 1000, &phase2 };
+Phase* phases = &phase1;
+
+
+void Game::update_game_mode() {
+  int current_time = SDL_GetTicks();
+  if (get_mode() == phases->mode) {
+    // cout << "mode : " <<  phases->mode << " dure " <<current_time - mode_timer << endl;
+    if (current_time - mode_timer >= phases->duration) {
+      if (phases->next != nullptr) {
+        set_mode(phases->next->mode);
+        mode_timer = current_time;
+        phases = phases->next;
+      }
+    }
+  } else {
+    set_mode(phases->mode);
+    mode_timer = current_time;
+  }
+}
+
+
+
+
+void Game::reset_game_mode() {
+  mode_timer = 0;
+  phase_count = 0;
+  phases = &phase1;
+  set_mode(MODE_SCATTER); // remettre le mode de jeu en mode scatter
+  mode_timer = SDL_GetTicks(); // réinitialiser le temps écoulé depuis le début de la phase
+  phase_count = 0; // remettre le compteur de phase à zéro
+}
+
+
+
 /* #endregion */
 
 /* #region Méthodes */
@@ -131,6 +194,9 @@ void Game::restart(bool with_dot_reset) {
   if (with_dot_reset) {
     get_element<Field>()->create_gommes_dots();
   }
+
+  // // On reset le timer pour le mode
+  reset_game_mode();
 
   // On redemarre la partie
   set_state(GAME_PLAY);
