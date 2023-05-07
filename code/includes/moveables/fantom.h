@@ -15,6 +15,9 @@ class Fantom: public Moveable {
     Fantom(int x, int y);
     virtual ~Fantom() override;
 
+    /* Méthode statique */
+    static void set_fantoms_state(FantomState state); // Change l'état de tous les fantômes
+
     /* Getters/Setters */
     FantomState get_state() {return _state;}
     void set_state(FantomState state) {_state = state;}

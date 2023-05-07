@@ -1,5 +1,6 @@
 #include "fantom.h"
 #include "pacman.h"
+#include "window.h"
 
 #include <iostream>
 
@@ -15,6 +16,15 @@ const SDL_Rect Fantom::SPRITES[8] = {
   { 123, 196, 14, 14 }  // Mangé bas
 };
 /* #endregion */
+
+void Fantom::set_fantoms_state(FantomState state)
+{
+	for (Element * element : Window::get_instance()->get_elements()) {
+		if (Fantom * fantom = dynamic_cast<Fantom*>(element))
+			fantom->set_state(state);
+	}
+}
+
 
 /* #region Constructeur/Destructeur */
 Fantom::Fantom(int x, int y):

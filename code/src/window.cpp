@@ -3,14 +3,15 @@
 
 #include <iostream>
 
-/* Variables de classe */
+/* #region Variables de classe */
 const char * Window::WINDOW_TITLE = "PacMan";
 const char * Window::SPRITES_PATH = "assets/sprites.bmp";
 Window * Window::_instance = nullptr;
+/* #endregion */
 
-/* Constructeur/Destructeur */
+/* #region Constructeur/Destructeur */
 Window::Window() {
-  if (_instance != nullptr)
+  if (_instance != nullptr) // Singleton
     throw "Window already exists";
   Window::_instance = this;
 
@@ -31,8 +32,9 @@ Window::~Window() {
   SDL_DestroyWindow(_window);
   SDL_Quit();
 }
+/* #endregion */
 
-/* Getters/Setters */
+/* #region Getters/Setters */
 void Window::remove_element(Element * element) {
   for (unsigned long i = 0; i < _elements.size(); i++) {
     if (_elements[i] == element) {
@@ -41,8 +43,9 @@ void Window::remove_element(Element * element) {
     }
   }
 }
+/* #endregion */
 
-/* Méthodes */
+/* #region Méthodes */
 // Démarre le jeu
 void Window::start() {
   Game * game = new Game();
@@ -56,7 +59,7 @@ void Window::update() {
 
   // On affiche tout les éléments
   for (Element * element : _elements)
-    add_to_window(element);
+    print_in_surface(element);
 
   SDL_UpdateWindowSurface(_window);
 }
@@ -69,6 +72,18 @@ bool Window::handle_events() {
       case SDL_QUIT:
         return false;
         break;
+      case SDL_KEYUP:
+        switch (event.key.keysym.sym) {
+          case SDLK_ESCAPE:
+            return false;
+            break;
+          case SDLK_p:
+            Game::get_instance()->toggle_pause();
+            break;
+          default:
+            break;
+        }
+        break;
       default:
         break;
     }
@@ -77,7 +92,7 @@ bool Window::handle_events() {
 }
 
 // Ajoute un élément à la fenêtre 
-void Window::add_to_window(Element * element) {
+void Window::print_in_surface(Element * element) {
   int x = element->get_pos()->x; // On sauvegarde le x, car il va être modifié par SDL_BlitScaled (si il est négatif)
   SDL_BlitScaled(_sprites, element->get_current_sprite(), SDL_GetWindowSurface(_window), element->get_pos());
   element->get_pos()->x = x;
@@ -89,3 +104,4 @@ void Window::quit() {
   event.type = SDL_QUIT;
   SDL_PushEvent(&event);
 }
+/* #endregion */

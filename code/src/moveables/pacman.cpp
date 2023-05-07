@@ -96,7 +96,7 @@ void Pacman::collision_react() {
   else if(Gomme * g = dynamic_cast<Gomme *>(e)) {
     delete g;
     // On passe en mode peur
-    Game::get_instance()->set_fantom_state(FANTOM_FRIGHTENED);
+    Fantom::set_fantoms_state(FANTOM_FRIGHTENED);
   }
 }
 

@@ -1,5 +1,7 @@
 #include "inky.h"
 #include "game.h"
+#include "blinky.h"
+#include "window.h"
 #include "iostream"
 
 /* #region Variables de classe */

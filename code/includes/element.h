@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL2/SDL.h>
-// #include "game.h"
 
 class Game;
 
@@ -13,7 +12,6 @@ class Element {
 
     /* Getters/Setters */
     SDL_Rect * get_pos() { return _pos; }
-    //  moveable Direction * get_dir() { ;}
     const SDL_Rect * get_current_sprite() { return _current_sprite; }
 
     /* Méthodes */
@@ -24,11 +22,9 @@ class Element {
     SDL_Rect * _pos;      // Position de l'élément sur la fenêtre
     int _animation = 0; // État de l'animation de l'élément
 
-    /* Getters/Setters communs à tous les éléments */
+    /* Getters/Setters */
     virtual SDL_Rect * get_sprites() = 0;
     virtual int get_zoom() = 0;
-
-    /* Getter/setters */
     void set_current_sprite(int index);
     
     /* Méthodes */
