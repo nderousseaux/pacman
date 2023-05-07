@@ -6,7 +6,8 @@
 
 enum GameState { 
   GAME_PLAY,
-  GAME_PAUSE
+  GAME_PAUSE,
+  GAME_WIN,
 };
 
 // Classe représentant une partie

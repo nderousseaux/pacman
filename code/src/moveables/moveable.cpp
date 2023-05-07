@@ -51,7 +51,7 @@ void Moveable::spawn() {
 // Met à jour l'élément (react + animate + move) (appelée à chaque tick)
 void Moveable::update() {
   Element::update();
-  if (Game::get_instance()->get_state() != GAME_PAUSE)
+  if (Game::get_instance()->get_state() == GAME_PLAY)
     move();
 
 }
