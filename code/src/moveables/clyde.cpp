@@ -22,7 +22,7 @@ const SDL_Rect Clyde::SPRITES[8] = {
     int res;
     Direction dir_choisie;
     int min_dist = 10000;
-    res = calc_distances(get_pos(), Game::get_instance()->get_pacman()->get_pos());
+    res = calc_distances(get_pos(), Game::get_instance()->get_element<Pacman>()->get_pos());
         switch(state){
 
           case FANTOM_CHASE:{
@@ -31,7 +31,7 @@ const SDL_Rect Clyde::SPRITES[8] = {
               
               case MODE_CHASE:{
                 if(res > 188){ // 47*4 (a cause du zoom)
-                  SDL_Rect * target = Game::get_instance()->get_pacman()->get_pos();
+                  SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
                   dir_choisie = get_dir_choisie(min_dist,*target,dir);
                   break;
                 }

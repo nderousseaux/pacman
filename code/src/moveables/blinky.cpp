@@ -40,7 +40,7 @@ Direction Blinky::which_dir(vector<Direction> dir, FantomState state){
       switch(Game::get_instance()->get_mode()){
         //Mode Chase
         case MODE_CHASE:{
-          SDL_Rect * target = Game::get_instance()->get_pacman()->get_pos();
+          SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
           dir_choisie = get_dir_choisie(min_dist,*target, dir);
           break;
         }

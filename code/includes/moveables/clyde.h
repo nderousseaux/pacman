@@ -20,7 +20,7 @@ class Clyde: public virtual Fantom {
     /* Getters/Setters */
     SDL_Rect * get_specific_sprites() override {return (SDL_Rect *)SPRITES;}
     Intersection * get_start() override {return START;}
-    Direction which_dir(vector<Direction> directions, FantomState state);
+    Direction which_dir(vector<Direction> directions, FantomState state) override;
     void set_destination(Intersection * new_destination);
 
   private:

@@ -1,5 +1,6 @@
 #pragma once
 #include "moveable.h"
+#include "field.h"
 #include "intersection.h"
 
 #include <SDL2/SDL.h>
