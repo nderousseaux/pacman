@@ -7,7 +7,6 @@
 #include "inky.h"
 #include "clyde.h"
 
-
 /* #region Variables de classe */
 Game * Game::_instance = nullptr;
 /* #endregion */
@@ -56,28 +55,6 @@ void Game::load_elements() {
   Window::get_instance()->add_element(new Clyde());
 }
 
-
-// Gestion du clavier, renvoie false si on appuie sur ESCAPE
-bool Game::control() {
-  // Gestion du clavier        
-  int nbk;
-  const Uint8* keys = SDL_GetKeyboardState(&nbk);
-
-  // Échap
-  if (keys[SDL_SCANCODE_ESCAPE])
-    return false;
-  // P
-  else if (keys[SDL_SCANCODE_P]) {
-    if (get_state() == GAME_PLAY)
-      set_state(GAME_PAUSE);
-    else if (get_state() == GAME_PAUSE)
-      set_state(GAME_PLAY);
-  }
-
-  return true;
-}
-
-
 // Boucle principale du jeu
 void Game::main_loop() {
 	bool running = true;
@@ -85,11 +62,6 @@ void Game::main_loop() {
 
     // Gestion des évènements
     running = Window::get_instance()->handle_events();
-    if (!running)
-      break;
-
-    // Gestion du clavier        
-    running = control();
     if (!running)
       break;
 
@@ -121,6 +93,14 @@ Element * Game::check_collision(Element * element) {
       return other;
   }
   return nullptr;
+}
+
+// Active ou désactive la pause
+void Game::toggle_pause() {
+  if (get_state() == GAME_PLAY)
+    set_state(GAME_PAUSE);
+  else
+    set_state(GAME_PLAY);
 }
 
 // On a gagné la partie // TODO: Améliorer avec le polymorphisme

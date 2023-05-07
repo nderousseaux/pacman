@@ -35,6 +35,7 @@ class Game {
 
     /* Méthodes */
     Element * check_collision(Element * element); // Vérifie si l'élément est en collision avec un autre élément
+    void toggle_pause();
     void win(); // Gère la victoire
     void restart(bool with_dot_reset); // Redémarre la partie
     void quit(); // Quitte le jeu

@@ -72,6 +72,18 @@ bool Window::handle_events() {
       case SDL_QUIT:
         return false;
         break;
+      case SDL_KEYUP:
+        switch (event.key.keysym.sym) {
+          case SDLK_ESCAPE:
+            return false;
+            break;
+          case SDLK_p:
+            Game::get_instance()->toggle_pause();
+            break;
+          default:
+            break;
+        }
+        break;
       default:
         break;
     }
