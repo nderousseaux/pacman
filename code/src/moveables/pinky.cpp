@@ -1,7 +1,5 @@
 #include "pinky.h"
 #include "game.h"
-#include <iostream>
-
 
 /* region Variables de classe */
 const SDL_Rect Pinky::SPRITES[8] = {
@@ -15,78 +13,6 @@ const SDL_Rect Pinky::SPRITES[8] = {
   { 55, 142, 14, 14 }  // Gauche 2
 };
 
-void Pinky::set_destination(Intersection * new_destination){
-  _destination = new_destination;
-}
-
-
-SDL_Rect Pinky::maj_target(Direction d, SDL_Rect * P_pos){
-  int Pac_x = P_pos->x;
-  int Pac_y = P_pos->y;
-  SDL_Rect target;
-  switch(d){
-    case RIGHT:
-      Pac_x+=96;
-      break;
-    case DOWN:
-      Pac_y+=96;
-      break;    
-    case LEFT:
-      Pac_x-=96;
-      break;    
-    case UP:
-      Pac_x-=96;
-      Pac_y-=96;
-      break;
-    default:
-      break;    
-  }
-  target = {Pac_x,Pac_y,0,0};
-  return (target);
-}
-
-Direction Pinky::which_dir(vector<Direction> dir, FantomState state){
-  Direction dir_choisie;
-  int min_dist = 10000;
-  switch(state){
-
-    case FANTOM_CHASE:{
-      Direction pac_dir;
-      SDL_Rect target;
-      SDL_Rect * Pac_pos = Game::get_instance()->get_element<Pacman>()->get_pos(); // Pos Pacman
-      pac_dir = Game::get_instance()->get_element<Pacman>()->get_direction(); // Direction de Pacman
-      target = maj_target(pac_dir, Pac_pos);
-      dir_choisie = get_dir_choisie(min_dist,target,dir);
-      break;
-    }
-    case FANTOM_SCATTER:{
-      dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
-      break;
-    }
-
-
-    case FANTOM_FRIGHTENED:{
-      dir_choisie = get_random_dir(dir);
-      break;
-    }
-
-    case FANTOM_EATEN:{
-      // Pinky se dirige vers sa position initiale afin de changer d'état
-      SDL_Rect init = {INITIAL_X, INITIAL_Y, 0, 0};
-      dir_choisie = get_dir_choisie(min_dist,init,dir);
-      switch_state(init);
-      break;
-    }
-  }
-  return dir_choisie;
-}
-
-
-
-
-
-
-
 Intersection * Pinky::START = nullptr; // Intersection de départ de Pinky (initialisée par Intersection)
 /* endregion */
 
@@ -97,4 +23,40 @@ Pinky::Pinky():
   }
 
 Pinky::~Pinky() {}
+/* #endregion */
+
+/* #region Méthodes */
+// Retourne la cible du fantôme en mode chase
+SDL_Rect * Pinky::get_target_chase() {
+  // pacman + 4 cases
+  SDL_Rect * pacman_pos = Game::get_instance()->get_element<Pacman>()->get_pos();
+  int x = pacman_pos->x;
+  int y = pacman_pos->y;
+  switch(Game::get_instance()->get_element<Pacman>()->get_direction()){
+    case RIGHT:
+      x+=96;
+      break;
+    case DOWN:
+      y+=96;
+      break;    
+    case LEFT:
+      x-=96;
+      break;    
+    case UP:
+      y-=96;
+      x-=96;
+      break;
+    default:
+      break; 
+  }
+  return new SDL_Rect{x, y, 0, 0};
+}
+// Retourne la cible du fantôme en mode scatter
+SDL_Rect * Pinky::get_target_scatter() {
+  return new SDL_Rect{SCATTER_X, SCATTER_Y, 0, 0};
+}
+// Retourne la cible du fantôme en mode eaten
+SDL_Rect * Pinky::get_target_origin() {
+  return new SDL_Rect{INITIAL_X, INITIAL_Y, 0, 0};
+}
 /* #endregion */

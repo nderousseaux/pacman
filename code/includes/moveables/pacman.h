@@ -30,7 +30,6 @@ class Pacman: public virtual Moveable {
     SDL_Rect * get_sprites() override {return (SDL_Rect *)SPRITES;}
     int get_zoom() override {return ZOOM;}
 
-
     /* Getters/Setters communs à tous les moveables */
     int get_speed() override {return SPEED;}
     Intersection * get_start() override {return START;}

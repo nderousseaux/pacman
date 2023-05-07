@@ -1,8 +1,9 @@
 #pragma once
 
+#include "pacman.h"
 #include "fantom.h"
 
-// Classe représentant Inky (le fantôme rose)
+// Classe représentant Inky (le fantôme bleu)
 class Inky: public virtual Fantom {
   public:
     /* Constructeur/Destructeur */
@@ -19,10 +20,11 @@ class Inky: public virtual Fantom {
     /* Getters/Setters */
     SDL_Rect * get_specific_sprites() override {return (SDL_Rect *)SPRITES;}
     Intersection * get_start() override {return START;}
-    Direction which_dir(vector<Direction> dir, FantomState state) override; // Methode pour indiquer comment régir pour le fantôme
-    void set_destination(Intersection * new_destination);
-    SDL_Rect maj_target(Direction d, SDL_Rect * P_pos, SDL_Rect * B_pos);
-
+    
+    /* Méthodes */
+    SDL_Rect * get_target_chase() override; // Retourne la cible du fantôme en mode chase
+    SDL_Rect * get_target_scatter() override; // Retourne la cible du fantôme en mode scatter
+    SDL_Rect * get_target_origin() override; // Retourne la cible du fantôme en mode eaten
 
   private:
     /* Variables de classe */

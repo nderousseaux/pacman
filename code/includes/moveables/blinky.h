@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pacman.h"
 #include "fantom.h"
 
 // Classe représentant blinky (le fantôme rouge)
@@ -15,16 +16,15 @@ class Blinky: public virtual Fantom {
     static const int SCATTER_X = 664;
     static const int SCATTER_Y = 0;
 
-
   protected:
     /* Getters/Setters */
     SDL_Rect * get_specific_sprites() override {return (SDL_Rect *)SPRITES;}
     Intersection * get_start() override {return START;}
-    void set_destination(Intersection * new_destination);
 
     /* Méthodes */
-    // void where_dest() override; //méthode pour établir la nouvelle destination (pro intersection)
-    Direction which_dir(vector<Direction> dir, FantomState state) override; // Methode pour indiquer comment régir pour le fantôme
+    SDL_Rect * get_target_chase() override; // Retourne la cible du fantôme en mode chase
+    SDL_Rect * get_target_scatter() override; // Retourne la cible du fantôme en mode scatter
+    SDL_Rect * get_target_origin() override; // Retourne la cible du fantôme en mode eaten
 
   private:
     /* Variables de classe */

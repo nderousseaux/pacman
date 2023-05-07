@@ -15,8 +15,10 @@ const SDL_Rect Fantom::SPRITES[8] = {
   { 106, 196, 14, 14 }, // Mangé haut
   { 123, 196, 14, 14 }  // Mangé bas
 };
+ChaseMode Fantom::CHASE_MODE = CHASE;
 /* #endregion */
 
+/* #region Méthodes de statique */
 void Fantom::set_fantoms_state(FantomState state)
 {
 	for (Element * element : Window::get_instance()->get_elements()) {
@@ -24,7 +26,7 @@ void Fantom::set_fantoms_state(FantomState state)
 			fantom->set_state(state);
 	}
 }
-
+/* #endregion */
 
 /* #region Constructeur/Destructeur */
 Fantom::Fantom(int x, int y):
@@ -32,7 +34,6 @@ Fantom::Fantom(int x, int y):
 
 Fantom::~Fantom() {}
 /* #endregion */
-
 
 /* #region Getters/Setters */
 SDL_Rect * Fantom::get_sprites() {
@@ -45,10 +46,9 @@ SDL_Rect * Fantom::get_sprites() {
 /* #endregion */
 
 /* #region Méthodes */
-
+int i = 0;
 // Fonction qui fait réagir le fantôme
 void Fantom::react() {
-
   // On choisi une direction parmis les directions proposées par la destination
 	vector<Direction> directions = _destination->get_directions();
 	// On supprime la direction opposée à la direction actuelle (un fantôme ne peut pas reculer)
@@ -58,47 +58,71 @@ void Fantom::react() {
 			break;
 		}
 	}
-	// En fonction du mode de jeux
-	_next_direction = which_dir(directions, _state);
-	if(_state == FANTOM_EATEN){
-		SPEED = 6;
-	}
-	else if(_state == FANTOM_FRIGHTENED){
-		SPEED = 2;
-	}
-	else{
-		SPEED = 3;
+
+	// On change la vitesse en fonction de l'état du fantôme
+	switch (_state) {
+		case FANTOM_FRIGHTENED:
+			_speed = 2;
+			break;
+		case FANTOM_EATEN:
+			_speed = 6;
+			break;
+		default:
+			_speed = 3;
+			break;
 	}
 	
-
+	set_next_direction(directions);
 }
 
-SDL_Rect Fantom::maj_pos(Direction d, int x_pos, int y_pos){
-	switch(d){
-      case UP:
-        y_pos-=10;
-        break;
-      case DOWN:
-        y_pos+=10;
-        break;
-      case RIGHT:
-        x_pos+=10;
-        break;
-      case LEFT:
-        x_pos-=10;
-        break;
-      default:
-       break;
-    }
-	SDL_Rect new_pos = {x_pos,y_pos,0,0};
-	return (new_pos);
+// Défini la prochaine direction du fantôme
+void Fantom::set_next_direction(vector<Direction> directions) {
+
+	// On défini la target en fonction de l'état du fantôme
+	SDL_Rect * target;
+	switch (get_state()){
+		case FANTOM_CHASE:
+			if (get_chase_mode() == CHASE)
+      	target = get_target_chase();
+			else
+				target = get_target_scatter();
+      break;
+    case FANTOM_FRIGHTENED:
+			target = nullptr;
+      break;
+    case FANTOM_EATEN:
+			target = get_target_origin();
+			SDL_Rect * pos = this->get_pos();
+			// On retourne à l'état chase si on est arrivé à l'origine
+			if(
+				(pos->x <= target->x + 10 && pos->x >= target->x - 10) &&
+				(pos->y <= target->y + 10 && pos->y >= target->y - 10)){
+					this->set_state(FANTOM_CHASE);
+			}
+      break;
+	}
+
+	// On défini la direction en fonction de l'état du fantôme
+	if (get_state() == FANTOM_FRIGHTENED)
+		// Si le fantôme est effrayé, on choisi une direction aléatoire
+		_next_direction = get_random_direction(directions);
+	else
+		// Si le fantôme n'est pas effrayé, on choisi la direction qui nous rapproche le plus de la target
+		_next_direction = choose_direction(directions, target);
+	
+}
+// Choisi aléatoirement une direction parmis les directions proposées
+Direction Fantom::get_random_direction(vector<Direction> directions){
+	return(directions[rand() % directions.size()]);
 }
 
-Direction Fantom::get_dir_choisie(int min_dist, SDL_Rect target, vector <Direction> dir){
+// Choisi la direction qui nous rapproche le plus de la target
+Direction Fantom::choose_direction(vector <Direction> directions, SDL_Rect * target){
+	int min_dist = 100000;
 	Direction dir_choisie;
-	for(Direction d: dir) {
-		SDL_Rect new_pos = maj_pos(d, this->get_pos()->x, this->get_pos()->y);
-		int res = calc_distances(&new_pos, &target);
+	for(Direction d: directions) {
+		SDL_Rect * new_pos = translate_pos(d, this->get_pos());
+		int res = Moveable::get_distance(new_pos, target);
 		if(res < min_dist){
 			min_dist = res;
 			dir_choisie = d;
@@ -107,30 +131,34 @@ Direction Fantom::get_dir_choisie(int min_dist, SDL_Rect target, vector <Directi
 	return dir_choisie;
 }
 
-void Fantom::switch_state(SDL_Rect init){
-	SDL_Rect * pos = this->get_pos();
-	if(
-		(pos->x <= init.x + 10 && pos->x >= init.x - 10) &&
-		(pos->y <= init.y + 10 && pos->y >= init.y - 10)){
-			this->set_state(FANTOM_CHASE);
+// Décalle une position en fonction d'une direction (de 10pixels) pour choisir le chemin le plus court
+SDL_Rect * Fantom::translate_pos(Direction d, SDL_Rect * pos){
+	int x = pos->x;
+	int y = pos->y;
+	switch(d){
+		case UP:
+			y-=10;
+			break;
+		case DOWN:
+			y+=10;
+			break;
+		case RIGHT:
+			x+=10;
+			break;
+		case LEFT:
+			x-=10;
+			break;
+		default:
+			break;
 	}
+	return new SDL_Rect{x,y,0,0};
 }
-
-Direction Fantom::get_random_dir(vector <Direction> dir){
-	return(dir[rand() % dir.size()]);
-}
-
-int Fantom::calc_distances(SDL_Rect * F, SDL_Rect * P){
-	int X = P->x - F->x;
-	int Y = P->y - F->y;
-	return sqrt((X*X) + (Y*Y));
-}
-
 
 // Fonction qui fait réapparaître le fantôme
 void Fantom::spawn() {
 	Moveable::spawn();
 	_state = FANTOM_CHASE;
+	set_chase_mode(CHASE);
 	set_current_sprite(0);
 }
 
@@ -141,27 +169,8 @@ void Fantom::animate() {
 
 	switch (_state) {
 		case FANTOM_CHASE: // Le fantôme est en mode chasse
-			phase %= 2; // Il n'y a que 2 sprites pour la chasse
-			switch(Moveable::_direction) {
-				case UP:
-					set_current_sprite(0+phase);
-					break;
-				case DOWN:
-					set_current_sprite(2+phase);
-					break;
-				case RIGHT:
-					set_current_sprite(4+phase);
-					break;
-				case LEFT:
-					set_current_sprite(6+phase);
-					break;
-				case STOP:
-					set_current_sprite(4+phase);
-					break;
-			}
-			break;
-		case FANTOM_SCATTER:
-			phase %= 2; // Il n'y a que 2 sprites pour la chasse
+			if (get_chase_mode() == CHASE){
+				phase %= 2; // Il n'y a que 2 sprites pour la chasse
 				switch(Moveable::_direction) {
 					case UP:
 						set_current_sprite(0+phase);
@@ -179,8 +188,28 @@ void Fantom::animate() {
 						set_current_sprite(4+phase);
 						break;
 				}
-				break;
-
+			}
+			else {
+				phase %= 2; // Il n'y a que 2 sprites pour la chasse
+					switch(Moveable::_direction) {
+						case UP:
+							set_current_sprite(0+phase);
+							break;
+						case DOWN:
+							set_current_sprite(2+phase);
+							break;
+						case RIGHT:
+							set_current_sprite(4+phase);
+							break;
+						case LEFT:
+							set_current_sprite(6+phase);
+							break;
+						case STOP:
+							set_current_sprite(4+phase);
+							break;
+					}
+			}
+			break;
 		case FANTOM_FRIGHTENED: // Le fantôme est en mode peur
 			phase %= 4; // Il y a 4 sprites pour le mode peur
 			set_current_sprite(8+phase);

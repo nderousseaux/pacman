@@ -20,8 +20,11 @@ class Clyde: public virtual Fantom {
     /* Getters/Setters */
     SDL_Rect * get_specific_sprites() override {return (SDL_Rect *)SPRITES;}
     Intersection * get_start() override {return START;}
-    Direction which_dir(vector<Direction> directions, FantomState state) override;
-    void set_destination(Intersection * new_destination);
+
+    /* Méthodes */
+    SDL_Rect * get_target_chase() override; // Retourne la cible du fantôme en mode chase
+    SDL_Rect * get_target_scatter() override; // Retourne la cible du fantôme en mode scatter
+    SDL_Rect * get_target_origin() override; // Retourne la cible du fantôme en mode eaten
 
   private:
     /* Variables de classe */

@@ -1,8 +1,5 @@
 #include "inky.h"
 #include "game.h"
-#include "blinky.h"
-#include "window.h"
-#include "iostream"
 
 /* #region Variables de classe */
 const SDL_Rect Inky::SPRITES[8] = {
@@ -19,78 +16,6 @@ const SDL_Rect Inky::SPRITES[8] = {
 Intersection * Inky::START = nullptr; // Intersection de départ de Inky (initialisée par Intersection)
 /* #endregion */
  
-
-void Inky::set_destination(Intersection * new_destination){
-  _destination = new_destination;
-}
-
- 
-SDL_Rect Inky::maj_target(Direction d, SDL_Rect * P_pos, SDL_Rect * B_pos){
-  int Pac_x = P_pos->x;
-  int Pac_y = P_pos->y;
-  SDL_Rect alter_target;
-  SDL_Rect final_target;
-  switch(d){
-    case RIGHT:
-      Pac_x+=48;
-      break;
-    case DOWN:
-      Pac_y+=48;
-      break;    
-    case LEFT:
-      Pac_x-=48;
-      break;    
-    case UP:
-      Pac_y-=48;
-      break;
-    default:
-      break; 
-  }
-  alter_target = {Pac_x,Pac_y,0,0};
-  final_target = {2*alter_target.x - B_pos->x, 2*alter_target.y - B_pos->y,0,0};
-  return final_target;
-}
-
-Direction Inky::which_dir(vector<Direction> dir, FantomState state){
-  Direction dir_choisie;
-  int min_dist = 10000;
-
-      switch(state){
-
-        case FANTOM_CHASE:{
-          Direction pac_dir;
-          SDL_Rect target;
-          SDL_Rect * Pac_pos = Game::get_instance()->get_element<Pacman>()->get_pos(); // Pos Pacman
-          SDL_Rect * Blinky_pos = Game::get_instance()->get_element<Blinky>()->get_pos();
-          pac_dir = Game::get_instance()->get_element<Pacman>()->get_direction();
-          target = maj_target(pac_dir, Pac_pos, Blinky_pos);
-          dir_choisie = get_dir_choisie(min_dist,target,dir);
-          break;
-        }
-        case FANTOM_SCATTER:{
-          dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
-          break;
-        }
-
-        case FANTOM_FRIGHTENED:{
-          dir_choisie = get_random_dir(dir);
-          break;
-        }
-        
-        case FANTOM_EATEN:{
-          // Inky se dirige vers sa position initiale afin de changer d'état
-          SDL_Rect init = {INITIAL_X, INITIAL_Y, 0, 0};
-          dir_choisie = get_dir_choisie(min_dist,init,dir);
-          switch_state(init);
-          break;
-        }
-
-      default:
-        break;
-      }
-    return dir_choisie;
-  }
-
 /* #region Constructeur/Destructeur */
 Inky::Inky():
 	Fantom(INITIAL_X, INITIAL_Y) {
@@ -98,4 +23,42 @@ Inky::Inky():
   }
 
 Inky::~Inky() {}
+/* #endregion */
+
+/* #region Méthodes */
+ // Retourne la cible du fantôme en mode chase
+SDL_Rect * Inky::get_target_chase() {
+  SDL_Rect * pacman_pos = Game::get_instance()->get_element<Pacman>()->get_pos();
+
+  // 2 fois la distance entre blinky et pacman + 2 cases
+  int x = pacman_pos->x;
+  int y = pacman_pos->y;
+  switch(Game::get_instance()->get_element<Pacman>()->get_direction()){
+    case RIGHT:
+      x+=48;
+      break;
+    case DOWN:
+      y+=48;
+      break;    
+    case LEFT:
+      x-=48;
+      break;    
+    case UP:
+      y-=48;
+      break;
+    default:
+      break; 
+  }
+  // On calcule la position de la cible (Prolongation du vecteur Blinky-Pacman)
+  SDL_Rect * blinky_pos = Game::get_instance()->get_element<Blinky>()->get_pos();  
+  return  new SDL_Rect{2*x - blinky_pos->x, 2*y - blinky_pos->y,0,0};
+}
+// Retourne la cible du fantôme en mode scatter
+SDL_Rect * Inky::get_target_scatter() {
+  return new SDL_Rect{SCATTER_X, SCATTER_Y, 0, 0};
+}
+// Retourne la cible du fantôme en mode eaten
+SDL_Rect * Inky::get_target_origin() {
+  return new SDL_Rect{INITIAL_X, INITIAL_Y, 0, 0};
+}
 /* #endregion */

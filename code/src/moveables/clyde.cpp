@@ -1,6 +1,5 @@
 #include "clyde.h"
 #include "game.h"
-#include <iostream>
 
 /* #region Variables de classe */
 const SDL_Rect Clyde::SPRITES[8] = {
@@ -14,56 +13,6 @@ const SDL_Rect Clyde::SPRITES[8] = {
   { 55, 178, 14, 14 }   // Gauche 2
 };
 
-  void Clyde::set_destination(Intersection * new_destination){
-    _destination = new_destination;
-  }
-
-  Direction Clyde::which_dir(vector<Direction> dir, FantomState state){
-    int res;
-    Direction dir_choisie;
-    int min_dist = 10000;
-    res = calc_distances(get_pos(), Game::get_instance()->get_element<Pacman>()->get_pos());
-        switch(state){
-
-          case FANTOM_CHASE:{
-            if(res > 188){ // 47*4 (a cause du zoom)
-            SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
-            dir_choisie = get_dir_choisie(min_dist,*target,dir);
-            break;
-            }
-            else{
-              SDL_Rect corner = {SCATTER_X,SCATTER_Y,0,0};
-              dir_choisie = get_dir_choisie(min_dist,corner,dir);
-              break;
-            }
-            break;
-          }
-          case FANTOM_SCATTER:{
-            dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0},dir);
-            break;
-          }
-
-          case FANTOM_FRIGHTENED:{
-            dir_choisie = get_random_dir(dir);
-            break;
-          }
-
-          case FANTOM_EATEN:{
-            // Clyde se dirige vers sa position initiale afin de changer d'état
-            SDL_Rect init = {INITIAL_X,INITIAL_Y, 0,0};
-            dir_choisie = get_dir_choisie(min_dist,init,dir);
-            switch_state(init);
-            break;
-          }
-        default:
-          break;
-        }
-    return dir_choisie;
-    }
-
-
-
-
 Intersection * Clyde::START = nullptr; // Intersection de départ de Clyde (initialisée par Intersection)
 /* #endregion */
 
@@ -74,4 +23,23 @@ Clyde::Clyde():
   }
 
 Clyde::~Clyde() {}
+/* #endregion */
+
+/* #region Méthodes */
+// Retourne la cible du fantôme en mode chase
+SDL_Rect * Clyde::get_target_chase() {
+  // Si clyde est proche de pacman, il va à sa position de départ
+  if(Moveable::get_distance(get_pos(), Game::get_instance()->get_element<Pacman>()->get_pos()) < 188)
+    return get_target_scatter();
+  else  
+    return Game::get_instance()->get_element<Pacman>()->get_pos();
+}
+// Retourne la cible du fantôme en mode scatter
+SDL_Rect * Clyde::get_target_scatter() {
+  return new SDL_Rect{SCATTER_X, SCATTER_Y, 0, 0};
+}
+// Retourne la cible du fantôme en mode eaten
+SDL_Rect * Clyde::get_target_origin() {
+  return new SDL_Rect{INITIAL_X, INITIAL_Y, 0, 0};
+}
 /* #endregion */
