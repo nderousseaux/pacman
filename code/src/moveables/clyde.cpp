@@ -25,13 +25,13 @@ const SDL_Rect Clyde::SPRITES[8] = {
     int y_corner = 856;
     int res;
     int res_maj;
-    res = calc_distances(get_pos(), Game::get_instance()->get_pacman()->get_pos());
+    res = calc_distances(get_pos(), Game::get_instance()->get_element<Pacman>()->get_pos());
     for(Direction d: dir) {
       int x = this->get_destination()->get_pos_x();
       int y = this->get_destination()->get_pos_y();
       if (res > 188){ /* 47 * 4 (a cause du zoom)*/
         SDL_Rect new_pos = maj_pos(d,x,y);
-        res_maj = calc_distances(&new_pos, Game::get_instance()->get_pacman()->get_pos());
+        res_maj = calc_distances(&new_pos, Game::get_instance()->get_element<Pacman>()->get_pos());
         }
       else{
           SDL_Rect pos_corner = {x_corner,y_corner,0,0};
