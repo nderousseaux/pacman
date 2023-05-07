@@ -37,14 +37,19 @@ class Fantom: public Moveable {
     void react() override; // Fait réagir le fantôme
     void animate() override; // Change le sprite du fantôme
     SDL_Rect maj_pos(Direction d, int x_pos, int y_pos);
+    Direction get_dir_choisie(int min_dist, SDL_Rect target, vector<Direction> dir);
     // void virtual where_dest() = 0;
-    Direction virtual which_dir(vector<Direction> direction) = 0;
+    Direction get_random_dir(vector <Direction> dir);
+    Direction virtual which_dir(vector<Direction> direction, FantomState _state) = 0;
+    void switch_state(SDL_Rect init);
     int calc_distances(SDL_Rect * F, SDL_Rect * P);
+
+
 
   private:
     /* Variables de classe */
     static const SDL_Rect SPRITES[8]; // Sprites commun à tous les fantômes
-    static const int SPEED = 3; // Vitesse de déplacement
+    int SPEED = 3; // Vitesse de déplacement
     static const int ZOOM = 2; // Zoom des sprites
 
     /* Variables d'instance */

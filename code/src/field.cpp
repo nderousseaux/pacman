@@ -1,6 +1,7 @@
 #include "field.h"
 #include "intersection.h"
 #include "game.h"
+#include <algorithm>
 
 /* #region Variables de classe */
 const SDL_Rect Field::SPRITES[3] = {

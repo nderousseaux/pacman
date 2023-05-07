@@ -45,27 +45,53 @@ SDL_Rect Pinky::maj_target(Direction d, SDL_Rect * P_pos){
   return (target);
 }
 
-Direction Pinky::which_dir(vector<Direction> dir){
+Direction Pinky::which_dir(vector<Direction> dir, FantomState state){
   Direction dir_choisie;
   int min_dist = 10000;
-  int res_maj;
-  Direction pac_dir;
-  SDL_Rect target;
-  for(Direction d: dir){
-    int x = this->get_destination()->get_pos_x();
-    int y = this->get_destination()->get_pos_y();
-    SDL_Rect * Pac_pos = Game::get_instance()->get_pacman()->get_pos(); // Pos Pacman
-    pac_dir = Game::get_instance()->get_pacman()->get_dir(); // Direction de Pacman
-    target = maj_target(pac_dir, Pac_pos);
-    SDL_Rect new_pos = maj_pos(d,x,y);
-    res_maj = calc_distances(&new_pos,&target);
-    if(res_maj < min_dist){
-      min_dist = res_maj;
-      dir_choisie = d;
+  switch(state){
+
+    case FANTOM_CHASE:{
+      switch(Game::get_instance()->get_mode()){
+        case MODE_CHASE:{
+        Direction pac_dir;
+        SDL_Rect target;
+        SDL_Rect * Pac_pos = Game::get_instance()->get_pacman()->get_pos(); // Pos Pacman
+        pac_dir = Game::get_instance()->get_pacman()->get_dir(); // Direction de Pacman
+        target = maj_target(pac_dir, Pac_pos);
+        dir_choisie = get_dir_choisie(min_dist,target,dir);
+        break;
+        }
+
+        case MODE_SCATTER:{
+          dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
+          break;
+        }
+
+        default:
+          break;
+      }
+      break;
+    }
+
+    case FANTOM_FRIGHTENED:{
+      dir_choisie = get_random_dir(dir);
+      break;
+    }
+
+    case FANTOM_EATEN:{
+      // Pinky se dirige vers sa position initiale afin de changer d'état
+      SDL_Rect init = {INITIAL_X, INITIAL_Y, 0, 0};
+      dir_choisie = get_dir_choisie(min_dist,init,dir);
+      switch_state(init);
+      break;
     }
   }
   return dir_choisie;
-  }
+}
+
+
+
+
 
 
 
