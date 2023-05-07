@@ -10,7 +10,7 @@ Window * Window::_instance = nullptr;
 
 /* Constructeur/Destructeur */
 Window::Window() {
-  if (_instance != nullptr)
+  if (_instance != nullptr) // Singleton
     throw "Window already exists";
   Window::_instance = this;
 
@@ -56,7 +56,7 @@ void Window::update() {
 
   // On affiche tout les éléments
   for (Element * element : _elements)
-    add_to_window(element);
+    print_in_surface(element);
 
   SDL_UpdateWindowSurface(_window);
 }
@@ -77,7 +77,7 @@ bool Window::handle_events() {
 }
 
 // Ajoute un élément à la fenêtre 
-void Window::add_to_window(Element * element) {
+void Window::print_in_surface(Element * element) {
   int x = element->get_pos()->x; // On sauvegarde le x, car il va être modifié par SDL_BlitScaled (si il est négatif)
   SDL_BlitScaled(_sprites, element->get_current_sprite(), SDL_GetWindowSurface(_window), element->get_pos());
   element->get_pos()->x = x;

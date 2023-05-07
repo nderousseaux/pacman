@@ -15,9 +15,9 @@ void Moveable::set_x(int x) {
   Element::_pos->x = x;
   // Si le sprite est entièrement sorti de la fenêtre, on le replace à l'autre bout
   if (x < -Element::_pos->w) {
-    Element::_pos->x = Window::WINDOW_WIDTH;
+    Element::_pos->x = Window::get_instance()->get_width();
   }
-  else if (x > Window::WINDOW_WIDTH) {
+  else if (x > Window::get_instance()->get_width()) {
     Element::_pos->x = -Element::_pos->w;
   }
 }
@@ -28,8 +28,8 @@ void Moveable::set_y(int y) {
     y = 0; 
     _direction = STOP;
   }
-  else if (y > Window::WINDOW_HEIGHT - Element::_pos->h) {
-    y = Window::WINDOW_HEIGHT - Element::_pos->h;
+  else if (y > Window::get_instance()->get_height() - Element::_pos->h) {
+    y = Window::get_instance ()->get_height() - Element::_pos->h;
     _direction = STOP;
   }
     
