@@ -19,6 +19,10 @@ class Game {
   private:
     /* Variables de classe */
     static Game * _instance; // Instance unique de la classe
+    static int mode_timer;
+    static int phase_count;
+    static const int scatter_duration[];
+    static const int chase_duration;
 
     /* Variables d'instance */
     GameState _state = GAME_PLAY; // Etat du jeu
@@ -28,6 +32,8 @@ class Game {
     void load_elements(); // Charge les éléments sur la fenêtre
     bool control();       // Gestion du clavier
     void main_loop();     // Boucle principale du jeu
+    void update_game_mode(); // Met à jour le mode de jeu
+    void reset_game_mode(); // Réinitialise l'horloge des phases
 
   public:
     /* Constructeur/Destructeur */

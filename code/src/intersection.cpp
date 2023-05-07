@@ -139,6 +139,7 @@ void Intersection::create_intersections(){
 
   blinky_start->set_right(hd12);
   blinky_start->set_left(hg13);
+  blinky_start->set_bottom(pinky_start);
 
   pinky_start->set_top(blinky_start);
 
