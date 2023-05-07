@@ -42,14 +42,25 @@ void Fantom::react() {
   // On choisi une direction parmis les directions proposées par la destination
 	vector<Direction> directions = _destination->get_directions();
 	// On supprime la direction opposée à la direction actuelle (un fantôme ne peut pas reculer)
-	for (unsigned long i = 0; i < directions.size(); i++)
+	for (unsigned long i = 0; i < directions.size(); i++){
 		if (directions[i] == Direction_utils::opposite(_direction)){
 			directions.erase(directions.begin() + i);
 			break;
 		}
+	}
+	// En fonction du mode de jeux
+	_next_direction = which_dir(directions, _state);
+	if(_state == FANTOM_EATEN){
+		SPEED = 6;
+	}
+	else if(_state == FANTOM_FRIGHTENED){
+		SPEED = 2;
+	}
+	else{
+		SPEED = 3;
+	}
+	
 
-	// On choisi une direction aléatoire parmis les directions restantes
-	_next_direction = which_dir(directions);
 }
 
 SDL_Rect Fantom::maj_pos(Direction d, int x_pos, int y_pos){
@@ -73,6 +84,31 @@ SDL_Rect Fantom::maj_pos(Direction d, int x_pos, int y_pos){
 	return (new_pos);
 }
 
+Direction Fantom::get_dir_choisie(int min_dist, SDL_Rect target, vector <Direction> dir){
+	Direction dir_choisie;
+	for(Direction d: dir) {
+		SDL_Rect new_pos = maj_pos(d, this->get_pos()->x, this->get_pos()->y);
+		int res = calc_distances(&new_pos, &target);
+		if(res < min_dist){
+			min_dist = res;
+			dir_choisie = d;
+		}
+	}
+	return dir_choisie;
+}
+
+void Fantom::switch_state(SDL_Rect init){
+	SDL_Rect * pos = this->get_pos();
+	if(
+		(pos->x <= init.x + 10 && pos->x >= init.x - 10) &&
+		(pos->y <= init.y + 10 && pos->y >= init.y - 10)){
+			this->set_state(FANTOM_CHASE);
+	}
+}
+
+Direction Fantom::get_random_dir(vector <Direction> dir){
+	return(dir[rand() % dir.size()]);
+}
 
 int Fantom::calc_distances(SDL_Rect * F, SDL_Rect * P){
 	int X = P->x - F->x;

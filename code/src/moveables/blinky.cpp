@@ -30,32 +30,46 @@ Blinky::Blinky():
     _destination = START;
   }
 
-// void Blinky::where_dest(){
-//   SDL_Rect * Pac_pos = Game::get_instance()->get_Pacman(); 
-//   int X_pac;
-//   int Y_pac;
-//   X_pac = Pac_pos->x;
-//   Y_pac = Pac_pos->y;
-//   Intersection * inter = new Intersection(X_pac,Y_pac);
-//   set_destination(inter);
-// }
 
-Direction Blinky::which_dir(vector<Direction> dir){
+
+Direction Blinky::which_dir(vector<Direction> dir, FantomState state){
   Direction dir_choisie;
   int min_dist = 10000;
-  int res;
-  for(Direction d: dir) {
-    int x = this->get_destination()->get_pos_x();
-    int y = this->get_destination()->get_pos_y();
-    SDL_Rect new_pos = maj_pos(d,x,y);
-    res = calc_distances(&new_pos, Game::get_instance()->get_pacman()->get_pos());
-    if(res < min_dist){
-      min_dist = res;
-      dir_choisie = d;
+  switch(state){
+    case FANTOM_CHASE:{
+      switch(Game::get_instance()->get_mode()){
+        //Mode Chase
+        case MODE_CHASE:{
+          SDL_Rect * target = Game::get_instance()->get_pacman()->get_pos();
+          dir_choisie = get_dir_choisie(min_dist,*target, dir);
+          break;
+        }
+        //Mode Scatter
+        case MODE_SCATTER:{
+          dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
+          break;
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    case FANTOM_FRIGHTENED:{
+      // On choisi une direction aléatoire parmis les directions restantes
+      dir_choisie = get_random_dir(dir);
+      break;
+    }
+    case FANTOM_EATEN:{
+      // Blinky se dirige vers sa position initiale afin de changer d'état
+      SDL_Rect init = {INITIAL_X, INITIAL_Y, 0, 0};
+      dir_choisie = get_dir_choisie(min_dist,init,dir);
+      switch_state(init);
+      break;
     }
   }
   return dir_choisie;
 }
+
  
 
 Blinky::~Blinky() {}

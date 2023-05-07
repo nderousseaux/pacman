@@ -18,31 +18,57 @@ const SDL_Rect Clyde::SPRITES[8] = {
     _destination = new_destination;
   }
 
-  Direction Clyde::which_dir(vector<Direction> dir){
-    Direction dir_choisie;
-    int min_dist =10000;
-    int x_corner = 0;
-    int y_corner = 856;
+  Direction Clyde::which_dir(vector<Direction> dir, FantomState state){
     int res;
-    int res_maj;
+    Direction dir_choisie;
+    int min_dist = 10000;
     res = calc_distances(get_pos(), Game::get_instance()->get_pacman()->get_pos());
-    for(Direction d: dir) {
-      int x = this->get_destination()->get_pos_x();
-      int y = this->get_destination()->get_pos_y();
-      if (res > 188){ /* 47 * 4 (a cause du zoom)*/
-        SDL_Rect new_pos = maj_pos(d,x,y);
-        res_maj = calc_distances(&new_pos, Game::get_instance()->get_pacman()->get_pos());
-        }
-      else{
-          SDL_Rect pos_corner = {x_corner,y_corner,0,0};
-          SDL_Rect new_pos_else = maj_pos(d,x,y);
-          res_maj = calc_distances(&new_pos_else, &pos_corner);
+        switch(state){
+
+          case FANTOM_CHASE:{
+            
+            switch(Game::get_instance()->get_mode()){
+              
+              case MODE_CHASE:{
+                if(res > 188){ // 47*4 (a cause du zoom)
+                  SDL_Rect * target = Game::get_instance()->get_pacman()->get_pos();
+                  dir_choisie = get_dir_choisie(min_dist,*target,dir);
+                  break;
+                }
+                else{
+                  SDL_Rect corner = {SCATTER_X,SCATTER_Y,0,0};
+                  dir_choisie = get_dir_choisie(min_dist,corner,dir);
+                  break;
+                }
+
+
+              case MODE_SCATTER:{
+                dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
+                break;
+              }
+
+              default:
+                break;
+              }
+            }
+            break;
           }
-      if(res_maj < min_dist){
-        min_dist = res_maj;
-        dir_choisie = d;
+
+          case FANTOM_FRIGHTENED:{
+            dir_choisie = get_random_dir(dir);
+            break;
+          }
+
+          case FANTOM_EATEN:{
+            // Clyde se dirige vers sa position initiale afin de changer d'état
+            SDL_Rect init = {INITIAL_X,INITIAL_Y, 0,0};
+            dir_choisie = get_dir_choisie(min_dist,init,dir);
+            switch_state(init);
+            break;
+          }
+        default:
+          break;
         }
-      }
     return dir_choisie;
     }
 

@@ -49,29 +49,52 @@ SDL_Rect Inky::maj_target(Direction d, SDL_Rect * P_pos, SDL_Rect * B_pos){
   return final_target;
 }
 
-Direction Inky::which_dir(vector<Direction> dir){
+Direction Inky::which_dir(vector<Direction> dir, FantomState state){
   Direction dir_choisie;
   int min_dist = 10000;
-  int res;
-  Direction pac_dir;
-  SDL_Rect target;
-  for(Direction d: dir){
-    int x = this->get_destination()->get_pos_x();
-    int y = this->get_destination()->get_pos_y();
-    SDL_Rect * Pac_pos = Game::get_instance()->get_pacman()->get_pos(); // Pos Pacman
-    SDL_Rect * Blinky_pos = Game::get_instance()->get_blinky()->get_pos();
-    pac_dir = Game::get_instance()->get_pacman()->get_dir(); // Direction de Pacman
-    target = maj_target(pac_dir, Pac_pos, Blinky_pos);
-    SDL_Rect new_pos = maj_pos(d,x,y);
-    res = calc_distances(&new_pos, &target);
-    if(res < min_dist){
-      min_dist = res;
-      dir_choisie = d;
-    }
-  }
-  return dir_choisie;
-  }
 
+      switch(state){
+
+        case FANTOM_CHASE:{
+          switch(Game::get_instance()->get_mode()){
+            case MODE_CHASE:{
+              Direction pac_dir;
+              SDL_Rect target;
+              SDL_Rect * Pac_pos = Game::get_instance()->get_pacman()->get_pos(); // Pos Pacman
+              SDL_Rect * Blinky_pos = Game::get_instance()->get_blinky()->get_pos();
+              pac_dir = Game::get_instance()->get_pacman()->get_dir();
+              target = maj_target(pac_dir, Pac_pos, Blinky_pos);
+              dir_choisie = get_dir_choisie(min_dist,target,dir);
+              break;
+            }
+            case MODE_SCATTER:{
+              dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
+              break;
+            }
+            default:
+              break;
+          }
+          break;
+        }
+
+        case FANTOM_FRIGHTENED:{
+          dir_choisie = get_random_dir(dir);
+          break;
+        }
+        
+        case FANTOM_EATEN:{
+          // Inky se dirige vers sa position initiale afin de changer d'état
+          SDL_Rect init = {INITIAL_X, INITIAL_Y, 0, 0};
+          dir_choisie = get_dir_choisie(min_dist,init,dir);
+          switch_state(init);
+          break;
+        }
+
+      default:
+        break;
+      }
+    return dir_choisie;
+  }
 
 /* #region Constructeur/Destructeur */
 Inky::Inky():
