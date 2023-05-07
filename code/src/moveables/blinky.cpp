@@ -37,21 +37,12 @@ Direction Blinky::which_dir(vector<Direction> dir, FantomState state){
   int min_dist = 10000;
   switch(state){
     case FANTOM_CHASE:{
-      switch(Game::get_instance()->get_mode()){
-        //Mode Chase
-        case MODE_CHASE:{
-          SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
-          dir_choisie = get_dir_choisie(min_dist,*target, dir);
-          break;
-        }
-        //Mode Scatter
-        case MODE_SCATTER:{
-          dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
-          break;
-        }
-        default:
-          break;
-      }
+      SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
+      dir_choisie = get_dir_choisie(min_dist,*target, dir);
+      break;
+    }
+    case FANTOM_SCATTER:{
+      dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
       break;
     }
     case FANTOM_FRIGHTENED:{

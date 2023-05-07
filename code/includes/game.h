@@ -9,11 +9,6 @@ enum GameState {
   GAME_PAUSE
 };
 
-enum GameMode { //TODO: Ranger
-  MODE_CHASE,
-  MODE_SCATTER
-};
-
 // Classe représentant une partie
 class Game {
   private:
@@ -22,7 +17,6 @@ class Game {
 
     /* Variables d'instance */
     GameState _state = GAME_PLAY; // Etat du jeu
-    GameMode _mode = MODE_SCATTER;
 
     /* Méthodes internes */
     void load_elements(); // Charge les éléments sur la fenêtre
@@ -35,10 +29,6 @@ class Game {
     ~Game();
 
     /* Getters/Setters */
-    GameMode get_mode() {return _mode;} //TODO : RANGER
-    void set_mode(GameMode mode) {_mode = mode;} // Change le mode de jeu
-
-
     static Game * get_instance() {return _instance;};
     GameState get_state() {return _state;}; // Renvoie l'état du jeu
     void set_state(GameState state) {_state = state;}; // Change l'état du jeu
