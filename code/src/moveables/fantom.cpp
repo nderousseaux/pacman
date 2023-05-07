@@ -45,7 +45,6 @@ Uint32 Fantom::timer_chase_mode(Uint32 interval, void * param) {
 			SDL_AddTimer(PHASES[PHASE-1] * 1000, timer_chase_mode, nullptr)
 		);
 
-	printf("la phase est %d\n", PHASE);
 	return 0;
 }
 

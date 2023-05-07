@@ -40,6 +40,8 @@ SDL_Rect * Clyde::get_target_scatter() {
 }
 // Retourne la cible du fantôme en mode eaten
 SDL_Rect * Clyde::get_target_origin() {
-  return new SDL_Rect{INITIAL_X, INITIAL_Y, 0, 0};
+  // return new SDL_Rect{INITIAL_X, INITIAL_Y, 0, 0};
+  return new SDL_Rect{Game::get_instance()->get_element<Blinky>()->INITIAL_X,Game::get_instance()->get_element<Blinky>()->INITIAL_Y,0,0};
+
 }
 /* #endregion */
