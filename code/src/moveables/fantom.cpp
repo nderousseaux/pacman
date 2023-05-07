@@ -15,7 +15,11 @@ const SDL_Rect Fantom::SPRITES[8] = {
   { 106, 196, 14, 14 }, // Mangé haut
   { 123, 196, 14, 14 }  // Mangé bas
 };
+// Phases des modes de poursuite des fantômes (pair: scatter, impair: chase)
+const int Fantom::PHASES[8] = {7, 20, 7, 20, 5, 20, 5, -1};
 ChaseMode Fantom::CHASE_MODE = CHASE;
+int Fantom::PHASE = 0;
+Uint32 Fantom::timer_phase_id = 0;
 /* #endregion */
 
 /* #region Méthodes de statique */
@@ -26,6 +30,33 @@ void Fantom::set_fantoms_state(FantomState state)
 			fantom->set_state(state);
 	}
 }
+
+// Appelé à chaque changement de mode de poursuite
+Uint32 Fantom::timer_chase_mode(Uint32 interval, void * param) {
+	(void ) interval;
+	(void ) param;
+	// Si c'est pair, c'est le mode scatter
+	set_chase_mode((PHASE % 2 == 0) ? SCATTER : CHASE);
+	PHASE++;
+
+	// On rapelle la fonction dans le bon délai
+	if (PHASES[PHASE] != -1)
+		set_timer_phase_id(
+			SDL_AddTimer(PHASES[PHASE-1] * 1000, timer_chase_mode, nullptr)
+		);
+
+	printf("la phase est %d\n", PHASE);
+	return 0;
+}
+
+// Réinitialise la phase
+void Fantom::reset_phase() {
+	PHASE = 0;
+	SDL_RemoveTimer(get_timer_phase_id());
+	// On traite les changements de mode de poursuite
+  Fantom::timer_chase_mode(0, nullptr);
+}
+
 /* #endregion */
 
 /* #region Constructeur/Destructeur */

@@ -15,10 +15,6 @@ class Game {
   private:
     /* Variables de classe */
     static Game * _instance; // Instance unique de la classe
-    static int mode_timer;
-    static int phase_count;
-    static const int scatter_duration[];
-    static const int chase_duration;
 
     /* Variables d'instance */
     GameState _state = GAME_PLAY; // Etat du jeu
