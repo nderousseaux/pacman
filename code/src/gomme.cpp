@@ -32,7 +32,7 @@ Gomme::~Gomme() {
 }
 /* #endregion */
 
-/* #region Méthodes statique */
+/* #region Méthodes statiques */
 // Crée tout les points
 void Gomme::create_gommes(std::vector<Gomme *> & gommes) {
 	for (int i = 0; i < 4; i++) {
@@ -48,5 +48,4 @@ void Gomme::react() {}
 
 // Change le sprite du point
 void Gomme::animate() {}
-
 /* #endregion */

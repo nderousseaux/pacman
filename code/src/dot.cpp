@@ -199,7 +199,6 @@ const int Dot::DOTS[188][2] = {
 	{616, 776},
 	{616, 808},
 };
-
 /* #endregion */
 
 /* #region Constructeur/Destructeur */
@@ -216,7 +215,7 @@ Dot::~Dot() {
 }
 /* #endregion */
 
-/* #region Méthodes statique */
+/* #region Méthodes statiques */
 // Crée tout les points
 void Dot::create_dots(std::vector<Dot *> & dots) {
 	for (int i = 0; i < 188; i++) {
@@ -232,5 +231,4 @@ void Dot::react() {}
 
 // Change le sprite du point
 void Dot::animate() {}
-
 /* #endregion */
