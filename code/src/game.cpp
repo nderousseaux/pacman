@@ -6,6 +6,7 @@
 #include "pinky.h"
 #include "inky.h"
 #include "clyde.h"
+#include "fantom.h"
 
 /* #region Variables de classe */
 Game * Game::_instance = nullptr;
@@ -103,7 +104,7 @@ void Game::toggle_pause() {
     set_state(GAME_PLAY);
 }
 
-// On a gagné la partie // TODO: Améliorer avec le polymorphisme
+// On a gagné la partie
 void Game::win() {
   // On arrête pacman
   get_element<Pacman>()->set_direction(STOP);
@@ -117,7 +118,7 @@ void Game::win() {
   set_state(GAME_WIN);
 }
 
-// Redémarre la partie // TODO: Améliorer avec le polymorphisme
+// Redémarre la partie
 void Game::restart(bool with_dot_reset) {
   // On fait respawn les fantomes
   for (Element * element : Window::get_instance()->get_elements()) {

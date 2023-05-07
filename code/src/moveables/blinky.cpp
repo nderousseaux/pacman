@@ -1,7 +1,5 @@
 #include "blinky.h"
 #include "game.h"
-#include <stdio.h>
-#include <iostream>
 
 /* #region Variables de classe */
 const SDL_Rect Blinky::SPRITES[8] = {
@@ -18,50 +16,26 @@ const SDL_Rect Blinky::SPRITES[8] = {
 Intersection * Blinky::START = nullptr; // Intersection de départ de Blinky (initialisée par Intersection)
 /* #endregion */
 
-void Blinky::set_destination(Intersection * new_dest){
-  _destination = new_dest;
-}
-
-
-
 /* #region Constructeur/Destructeur */
 Blinky::Blinky():
 	Fantom(INITIAL_X, INITIAL_Y) {
     _destination = START;
   }
 
-
-
-Direction Blinky::which_dir(vector<Direction> dir, FantomState state){
-  Direction dir_choisie;
-  int min_dist = 10000;
-  switch(state){
-    case FANTOM_CHASE:{
-      SDL_Rect * target = Game::get_instance()->get_element<Pacman>()->get_pos();
-      dir_choisie = get_dir_choisie(min_dist,*target, dir);
-      break;
-    }
-    case FANTOM_SCATTER:{
-      dir_choisie = get_dir_choisie(min_dist,{SCATTER_X,SCATTER_Y,0,0}, dir);
-      break;
-    }
-    case FANTOM_FRIGHTENED:{
-      // On choisi une direction aléatoire parmis les directions restantes
-      dir_choisie = get_random_dir(dir);
-      break;
-    }
-    case FANTOM_EATEN:{
-      // Blinky se dirige vers sa position initiale afin de changer d'état
-      SDL_Rect init = {INITIAL_X, INITIAL_Y, 0, 0};
-      dir_choisie = get_dir_choisie(min_dist,init,dir);
-      switch_state(init);
-      break;
-    }
-  }
-  return dir_choisie;
-}
-
- 
-
 Blinky::~Blinky() {}
+/* #endregion */
+
+/* #region Méthodes */
+ // Retourne la cible du fantôme en mode chase
+SDL_Rect * Blinky::get_target_chase() {
+  return Game::get_instance()->get_element<Pacman>()->get_pos();
+}
+// Retourne la cible du fantôme en mode scatter
+SDL_Rect * Blinky::get_target_scatter() {
+  return new SDL_Rect{SCATTER_X, SCATTER_Y, 0, 0};
+}
+// Retourne la cible du fantôme en mode eaten
+SDL_Rect * Blinky::get_target_origin() {
+  return new SDL_Rect{INITIAL_X, INITIAL_Y, 0, 0};
+}
 /* #endregion */

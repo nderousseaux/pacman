@@ -2,13 +2,20 @@
 #include "game.h"
 #include "moveable.h"
 
+/* #region Méthodes statique */
+int Moveable::get_distance(SDL_Rect * m1, SDL_Rect * m2) {
+	int X = m1->x - m2->x;
+	int Y = m1->y - m2->y;
+	return sqrt((X*X) + (Y*Y));
+}
+
+
 /* #region Constructeurs/Destructeurs */
 Moveable::Moveable(int x, int y):
   Element(x, y) {}
 
 Moveable::~Moveable() {}
 /* #endregion */
-
 
 /* #region Getters/Setters */
 void Moveable::set_x(int x) { 

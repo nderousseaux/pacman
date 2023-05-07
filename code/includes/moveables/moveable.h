@@ -19,6 +19,10 @@ class Moveable: public Element {
     /* Méthodes */
     virtual void spawn();   // Fait réapparaître l'élément
 
+    /* Méthodes statique */
+    // Retourne la distance entre deux éléments (en nombre de pixels)
+    static int get_distance(SDL_Rect * m1, SDL_Rect * m2);
+
   protected:
     /* Variables d'instance */
     Intersection * _destination = nullptr; // Destination de l'objet en mouvement
