@@ -1,6 +1,7 @@
 #pragma once
 
 #include "moveable.h"
+#include "pacman.h"
 
 enum FantomState {
   FANTOM_CHASE,        // Chasse pacman
