@@ -3,12 +3,13 @@
 
 #include <iostream>
 
-/* Variables de classe */
+/* #region Variables de classe */
 const char * Window::WINDOW_TITLE = "PacMan";
 const char * Window::SPRITES_PATH = "assets/sprites.bmp";
 Window * Window::_instance = nullptr;
+/* #endregion */
 
-/* Constructeur/Destructeur */
+/* #region Constructeur/Destructeur */
 Window::Window() {
   if (_instance != nullptr) // Singleton
     throw "Window already exists";
@@ -31,8 +32,9 @@ Window::~Window() {
   SDL_DestroyWindow(_window);
   SDL_Quit();
 }
+/* #endregion */
 
-/* Getters/Setters */
+/* #region Getters/Setters */
 void Window::remove_element(Element * element) {
   for (unsigned long i = 0; i < _elements.size(); i++) {
     if (_elements[i] == element) {
@@ -41,8 +43,9 @@ void Window::remove_element(Element * element) {
     }
   }
 }
+/* #endregion */
 
-/* Méthodes */
+/* #region Méthodes */
 // Démarre le jeu
 void Window::start() {
   Game * game = new Game();
@@ -89,3 +92,4 @@ void Window::quit() {
   event.type = SDL_QUIT;
   SDL_PushEvent(&event);
 }
+/* #endregion */

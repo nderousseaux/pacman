@@ -54,8 +54,8 @@ Direction Pinky::which_dir(vector<Direction> dir){
   for(Direction d: dir){
     int x = this->get_destination()->get_pos_x();
     int y = this->get_destination()->get_pos_y();
-    SDL_Rect * Pac_pos = Game::get_instance()->get_pacman()->get_pos(); // Pos Pacman
-    pac_dir = Game::get_instance()->get_pacman()->get_dir(); // Direction de Pacman
+    SDL_Rect * Pac_pos = Game::get_instance()->get_element<Pacman>()->get_pos(); // Pos Pacman
+    pac_dir = Game::get_instance()->get_element<Pacman>()->get_dir(); // Direction de Pacman
     target = maj_target(pac_dir, Pac_pos);
     SDL_Rect new_pos = maj_pos(d,x,y);
     res_maj = calc_distances(&new_pos,&target);

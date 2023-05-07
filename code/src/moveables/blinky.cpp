@@ -31,7 +31,7 @@ Blinky::Blinky():
   }
 
 // void Blinky::where_dest(){
-//   SDL_Rect * Pac_pos = Game::get_instance()->get_Pacman(); 
+//   SDL_Rect * Pac_pos = Game::get_instance()->get_element<Pacman>(); 
 //   int X_pac;
 //   int Y_pac;
 //   X_pac = Pac_pos->x;
@@ -48,7 +48,7 @@ Direction Blinky::which_dir(vector<Direction> dir){
     int x = this->get_destination()->get_pos_x();
     int y = this->get_destination()->get_pos_y();
     SDL_Rect new_pos = maj_pos(d,x,y);
-    res = calc_distances(&new_pos, Game::get_instance()->get_pacman()->get_pos());
+    res = calc_distances(&new_pos, Game::get_instance()->get_element<Pacman>()->get_pos());
     if(res < min_dist){
       min_dist = res;
       dir_choisie = d;

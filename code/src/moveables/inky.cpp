@@ -1,5 +1,7 @@
 #include "inky.h"
 #include "game.h"
+#include "blinky.h"
+#include "window.h"
 #include "iostream"
 
 /* #region Variables de classe */
@@ -58,9 +60,9 @@ Direction Inky::which_dir(vector<Direction> dir){
   for(Direction d: dir){
     int x = this->get_destination()->get_pos_x();
     int y = this->get_destination()->get_pos_y();
-    SDL_Rect * Pac_pos = Game::get_instance()->get_pacman()->get_pos(); // Pos Pacman
-    SDL_Rect * Blinky_pos = Game::get_instance()->get_blinky()->get_pos();
-    pac_dir = Game::get_instance()->get_pacman()->get_dir(); // Direction de Pacman
+    SDL_Rect * Pac_pos = Game::get_instance()->get_element<Pacman>()->get_pos(); // Pos Pacman
+    pac_dir = Game::get_instance()->get_element<Pacman>()->get_dir(); // Direction de Pacman
+    SDL_Rect * Blinky_pos = Game::get_instance()->get_element<Blinky>()->get_pos();
     target = maj_target(pac_dir, Pac_pos, Blinky_pos);
     SDL_Rect new_pos = maj_pos(d,x,y);
     res = calc_distances(&new_pos, &target);
