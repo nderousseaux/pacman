@@ -53,7 +53,6 @@ void Moveable::update() {
   Element::update();
   if (Game::get_instance()->get_state() == GAME_PLAY)
     move();
-
 }
 
 // Déplace l'élément
