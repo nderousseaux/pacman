@@ -1,6 +1,7 @@
 #include "dot.h"
 #include "window.h"
 #include "field.h"
+#include "game.h"
 
 /* #region Variables de classe */
 const SDL_Rect Dot::SPRITES[1] = {
@@ -210,7 +211,7 @@ Dot::Dot(int x, int y): Element(x,y) {
 Dot::~Dot() {
 	Window::get_instance()->remove_element(this);
 	// On se supprime du field
-	Field::get_instance()->remove_dot(this);
+	Game::get_instance()->get_element<Field>()->remove_dot(this);
 	
 }
 /* #endregion */

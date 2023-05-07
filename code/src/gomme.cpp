@@ -1,6 +1,7 @@
 #include "gomme.h"
 #include "window.h"
 #include "field.h"
+#include "game.h"
 
 /* #region Variables de classe */
 const SDL_Rect Gomme::SPRITES[1] = {
@@ -26,7 +27,7 @@ Gomme::Gomme(int x, int y): Element(x,y) {
 Gomme::~Gomme() {
 	Window::get_instance()->remove_element(this);
 	// On se supprime du field
-	Field::get_instance()->remove_gomme(this);
+	Game::get_instance()->get_element<Field>()->remove_gomme(this);
 	
 }
 /* #endregion */

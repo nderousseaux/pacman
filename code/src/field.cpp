@@ -1,7 +1,6 @@
 #include "field.h"
 #include "intersection.h"
 #include "game.h"
-#include <algorithm>
 
 /* #region Variables de classe */
 const SDL_Rect Field::SPRITES[3] = {
@@ -9,37 +8,29 @@ const SDL_Rect Field::SPRITES[3] = {
 	{ 370,4, 166,214 },
 	{ 541,4, 166,214 }
 };
-// Instance unique de la classe
-Field * Field::_instance = nullptr;
 /* #endregion */
-
-/* 1 tiles fait 166/28 = 5,9 environ soit pour 8 tiles 47,4285 */
 
 /* #region Constructeur/Destructeur */
 Field::Field(): Element(0,0) {
-	if (_instance != nullptr)
-    throw "Field already exists";
-  Field::_instance = this;
-	set_current_sprite(1);
+
 	// On génère les intersections
 	Intersection::create_intersections();
 
-	// On génère les points
-	create_dots();
+	// On génère les points/gommes
+	create_gommes_dots();
 }
 
 Field::~Field() {}
 /* #endregion */
 
 /* #region Méthodes */
-// Met tout les points dans le vecteur
-void Field::create_dots() {
+// Met tout les points/gommes dans les vecteurs
+void Field::create_gommes_dots() {
 	// On génère les points
 	Dot::create_dots(_dots);
 
 	Gomme::create_gommes(_gommes);
 }
-
 
 // Supprime un point du terrain
 void Field::remove_dot(Dot * dot) {
@@ -53,29 +44,35 @@ void Field::remove_gomme(Gomme * gomme) {
 	_gommes.erase(std::remove(_gommes.begin(), _gommes.end(), gomme), _gommes.end());
 }
 
+// Retourne vrai si le terrain est vide
+bool Field::is_empty() {
+	return _dots.size() == 0 && _gommes.size() == 0;
+}
+
 // Fait réagir le terrain
 void Field::react() {}
 
 // Change le sprite du terrain
 void Field::animate() {
-	if (_state == FIELD_NORMAL) {
+	// Si on est en train de jouer, le sprite est 1.
+	if (Game::get_instance()->get_state() != GAME_WIN )
 		set_current_sprite(1);
-	} else if (_state == FIELD_WIN) {
+
+	// Sinon, on a gagné, le sprite clignote
+	else if (Game::get_instance()->get_state() == GAME_WIN) {
+
 		// On change le sprite toutes les 10 frames
-		int phase = (_animation / 10)%2;		
+		int phase = (_animation / 10)%2;
+
 		set_current_sprite(phase + 1);
 
+		// Si on a fini l'animation, on recommence le jeu
 		if (_animation == 100) {
-			_state = FIELD_NORMAL;
 			_animation = 0;
-
-			// On recommence le jeu
 			Game::get_instance()->restart(true);
-
+			return;
 		}
-		else {
-			_animation++;
-		}
+		_animation++;
 	}
 
 }

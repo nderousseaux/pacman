@@ -90,7 +90,7 @@ void Pacman::collision_react() {
     // On le supprime
     delete d;
     // Si il n'y a plus de points
-    if (Field::get_instance()->get_dots().size() == 0 && Field::get_instance()->get_state() != FIELD_WIN)
+    if (Game::get_instance()->get_element<Field>()->is_empty() && Game::get_instance()->get_state() == GAME_PLAY)
       Game::get_instance()->win();
   }
   else if(Gomme * g = dynamic_cast<Gomme *>(e)) {

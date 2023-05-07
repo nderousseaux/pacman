@@ -107,13 +107,14 @@ void Game::toggle_pause() {
 void Game::win() {
   // On arrête pacman
   get_element<Pacman>()->set_direction(STOP);
-  get_element<Blinky>()->set_direction(STOP);
 
-  // On arrête les fantomes
-  set_state(GAME_PAUSE);
+  get_element<Blinky>()->set_direction(STOP);
+  get_element<Pinky>()->set_direction(STOP);
+  get_element<Inky>()->set_direction(STOP);
+  get_element<Clyde>()->set_direction(STOP);
 
   // On lance l'animation de victoire
-  get_element<Field>()->set_state(FIELD_WIN);
+  set_state(GAME_WIN);
 }
 
 // Redémarre la partie // TODO: Améliorer avec le polymorphisme
@@ -127,7 +128,7 @@ void Game::restart(bool with_dot_reset) {
   }
 
   if (with_dot_reset) {
-    Field::get_instance()->create_dots();
+    get_element<Field>()->create_gommes_dots();
   }
 
   // On redemarre la partie
