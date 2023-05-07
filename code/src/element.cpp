@@ -1,8 +1,6 @@
 #include "game.h"
 #include "element.h"
 
-#include <iostream>
-
 /* #region Constructeur/Destructeur */
 Element::Element(int x, int y): _pos(new SDL_Rect) {
   _pos->x = x;
