@@ -142,7 +142,7 @@ void Intersection::create_intersections(){
   blinky_start->set_bottom(pinky_start);
 
   pinky_start->set_top(blinky_start);
-
+  
   inky_start->set_right(pinky_start);
 
   clyde_start->set_left(pinky_start);
