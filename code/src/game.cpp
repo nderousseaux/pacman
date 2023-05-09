@@ -90,8 +90,10 @@ Element * Game::check_collision(Element * element) {
     if (other == element || dynamic_cast<Field*>(other) != nullptr)
       continue;
     if (
-      element->get_pos()->x + element->get_pos()->w >= other->get_pos()->x && element->get_pos()->x <= other->get_pos()->x + other->get_pos()->w &&
-      element->get_pos()->y + element->get_pos()->h >= other->get_pos()->y && element->get_pos()->y <= other->get_pos()->y + other->get_pos()->h
+      element->get_pos()->x + element->get_pos()->w >= other->get_pos()->x &&
+      element->get_pos()->x <= other->get_pos()->x + other->get_pos()->w &&
+      element->get_pos()->y + element->get_pos()->h >= other->get_pos()->y &&
+      element->get_pos()->y <= other->get_pos()->y + other->get_pos()->h
     )
       return other;
   }
